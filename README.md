@@ -11,20 +11,20 @@ Cross-platform smart home monitoring and control application built with .NET MAU
 
 ## 📋 Table of Contents
 
-- [⚡ Features](#-features)
-- [🧩 Architecture](#-architecture)
-- [🛠️ Prerequisites](#-prerequisites)
+- [⚡ Features](#features)
+- [🧩 Architecture](#architecture)
+- [🛠️ Prerequisites](#prerequisites)
 - [⬇️ Installation](#installation)
 - [⚙️ Configuration](#configuration)
 - [▶️ Running the Application](#running-the-application)
-- [🚀 Usage](#-usage)
-- [🗂️ Project Structure](#-project-structure)
-- [🧑‍💻 Development](#-development)
-- [📄 License](#-license)
+- [🚀 Usage](#usage)
+- [🗂️ Project Structure](#project-structure)
+- [🧑‍💻 Development](#development)
+- [📄 License](#license)
 
 ---
 
-## ⚡ Features
+## Features
 
 ### 📟 Real-time Monitoring
 - **Live Metrics Dashboard**: Temperature, Humidity, Power consumption
@@ -51,7 +51,7 @@ Cross-platform smart home monitoring and control application built with .NET MAU
 
 ---
 
-## 🧩 Architecture
+## Architecture
 
 ```
 +-----------------------------+        +-----------------------------+
@@ -329,7 +329,7 @@ dotnet run --framework net8.0-android
 
 ---
 
-## 🚀 Usage
+## Usage
 
 ### Login
 
@@ -375,7 +375,7 @@ dotnet run --framework net8.0-android
 
 ---
 
-## 🗂️ Project Structure
+##  Project Structure
 
 ```
 SmartHome2/
@@ -420,7 +420,7 @@ SmartHome2/
 
 ---
 
-## 🧑‍💻 Development
+## Development
 
 ### Code Style
 
@@ -486,7 +486,7 @@ System.Diagnostics.Debug.WriteLine($"MQTT: Message received on {topic}: {payload
 View logs in Visual Studio: **Debug → Windows → Output** (select "Debug")
 
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
