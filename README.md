@@ -1,4 +1,4 @@
-# ?? SmartHome2 - .NET MAUI Smart Home Client
+# 🏠 SmartHome2 - .NET MAUI Smart Home Client
 
 [![.NET MAUI](https://img.shields.io/badge/.NET%20MAUI-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/apps/maui)
 [![C#](https://img.shields.io/badge/C%23-12.0-239120?logo=csharp)](https://docs.microsoft.com/dotnet/csharp/)
@@ -9,48 +9,48 @@ Cross-platform smart home monitoring and control application built with .NET MAU
 
 ![SmartHome2 Dashboard](docs/screenshots/dashboard.png)
 
-## ?? Table of Contents
+## 📋 Table of Contents
 
-- [Features](#-features)
-- [Architecture](#-architecture)
-- [Prerequisites](#-prerequisites)
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [Running the Application](#-running-the-application)
-- [Usage](#-usage)
-- [Project Structure](#-project-structure)
-- [Development](#-development)
-- [Troubleshooting](#-troubleshooting)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [⚡ Features](#-features)
+- [🧩 Architecture](#-architecture)
+- [🛠️ Prerequisites](#-prerequisites)
+- [⬇️ Installation](#-installation)
+- [⚙️ Configuration](#-configuration)
+- [▶️ Running the Application](#-running-the-application)
+- [🚀 Usage](#-usage)
+- [🗂️ Project Structure](#-project-structure)
+- [🧑‍💻 Development](#-development)
+- [🆘 Troubleshooting](#-troubleshooting)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 
 ---
 
-## ? Features
+## ⚡ Features
 
-### ?? Real-time Monitoring
+### 📟 Real-time Monitoring
 - **Live Metrics Dashboard**: Temperature, Humidity, Power consumption
 - **MQTT Push Notifications**: Instant updates without polling
 - **Historical Charts**: Interactive LiveCharts with configurable data points
 - **Offline Support**: SQLite caching for offline operation
 
-### ?? Device Control
+### 🕹️ Device Control
 - **Remote Device Management**: Toggle smart home devices (lights, fans, HVAC, etc.)
 - **Role-Based Access Control**: Admin and Guest user roles
 - **Visual Feedback**: Real-time device state updates
 
-### ?? Internationalization
+### 🌐 Internationalization
 - **Multi-language Support**: English and German (Deutsch)
 - **Dynamic Language Switching**: Change language without app restart
 - **Localized UI**: All screens fully translated
 
-### ?? Security
+### 🔒 Security
 - **MQTT TLS/SSL**: Encrypted communication with broker
 - **Client Certificates**: mTLS authentication support
 - **ACL Integration**: Mosquitto ACL enforcement
 - **Secure Credentials**: Persistent credential storage
 
-### ?? Modern UI/UX
+### 🖥️ Modern UI/UX
 - **Material Design**: Clean, responsive interface
 - **Cross-Platform**: Windows, Android, iOS, macOS
 - **Pull-to-Refresh**: Intuitive gesture controls
@@ -58,31 +58,31 @@ Cross-platform smart home monitoring and control application built with .NET MAU
 
 ---
 
-## ??? Architecture
+## 🧩 Architecture
 
 ```
-???????????????????????????????????????????????????????????????????
-?                        MAUI Application                          ?
-???????????????????????????????????????????????????????????????????
-?                                                                  ?
-?  ????????????????    ????????????????    ????????????????     ?
-?  ?   Views      ??????  ViewModels  ??????   Services   ?     ?
-?  ?  (XAML)      ?    ?   (MVVM)     ?    ?              ?     ?
-?  ????????????????    ????????????????    ????????????????     ?
-?                                                   ?              ?
-?                          ????????????????????????????????????   ?
-?                          ?                        ?         ?   ?
-?                   ??????????????         ???????????????  ???? ?
-?                   ? ApiClient  ?         ? MqttService ?  ?DB? ?
-?                   ?  (HTTP)    ?         ?  (MQTT)     ?  ?  ? ?
-?                   ??????????????         ???????????????  ???? ?
-?????????????????????????????????????????????????????????????????
-                          ?                       ?
-                          ?                       ?
-                   ????????????????       ????????????????
-                   ?  FastAPI     ?????????  Mosquitto   ?
-                   ?  Server      ?       ?  Broker      ?
-                   ????????????????       ????????????????
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        MAUI Application                                    │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌───────────────┬───────────────┬───────────────┐                          │
+│  │   Views       │  ViewModels   │   Services    │                          │
+│  │   (XAML)      │   (MVVM)      │               │                          │
+│  └───────────────┴───────────────┴───────────────┘                          │
+│                                                     │                       │
+│                          ┌────────────────────────┐ │                       │
+│                          │                        │ │                       │
+│                   ┌─────────────┬─────────────┬───┘ │                       │
+│                   │ ApiClient   │ MqttService │ DB  │                       │
+│                   │  (HTTP)     │  (MQTT)     │     │                       │
+│                   └─────────────┴─────────────┴─────┘                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+                          │                       │
+                          │                       │
+                   ┌───────────────┬───────────────┐
+                   │  FastAPI      │  Mosquitto    │
+                   │  Server       │  Broker       │
+                   └───────────────┴───────────────┘
 ```
 
 ### Technology Stack
@@ -100,7 +100,7 @@ Cross-platform smart home monitoring and control application built with .NET MAU
 
 ---
 
-## ?? Prerequisites
+## 🛠️ Prerequisites
 
 ### Required Software
 
@@ -140,7 +140,7 @@ Cross-platform smart home monitoring and control application built with .NET MAU
 
 ---
 
-## ?? Installation
+## ⬇️ Installation
 
 ### 1. Clone the Repository
 
@@ -155,7 +155,7 @@ cd SmartHome2
 dotnet restore
 ```
 
-Or in Visual Studio: `Right-click Solution ? Restore NuGet Packages`
+Or in Visual Studio: `Right-click Solution → Restore NuGet Packages`
 
 ### 3. Setup MQTT Certificates (for TLS)
 
@@ -193,7 +193,7 @@ Place generated files in project root:
 
 ---
 
-## ?? Configuration
+## ⚙️ Configuration
 
 ### 1. Backend Server Setup
 
@@ -261,14 +261,14 @@ mosquitto -c mosquitto.conf -v
 
 On first launch, configure in **Settings**:
 
-| Setting | Default | Description |
-|---------|---------|-------------|
-| **Base URL** | `http://127.0.0.1:8000/` | FastAPI server address |
-| **MQTT Broker** | `127.0.0.1` | Mosquitto broker IP |
-| **MQTT Port** | `8883` | Broker port (8883=TLS, 1883=plain) |
-| **Use TLS** | `true` | Enable/disable TLS encryption |
-| **Refresh Interval** | `5` seconds | Polling interval (fallback) |
-| **Language** | `en` | UI language (en/de) |
+| Setting             | Default                | Description                        |
+|---------------------|-----------------------|------------------------------------|
+| **Base URL**        | `http://127.0.0.1:8000/` | FastAPI server address             |
+| **MQTT Broker**     | `127.0.0.1`           | Mosquitto broker IP                |
+| **MQTT Port**       | `8883`                | Broker port (8883=TLS, 1883=plain) |
+| **Use TLS**         | `true`                | Enable/disable TLS encryption      |
+| **Refresh Interval**| `5` seconds           | Polling interval (fallback)        |
+| **Language**        | `en`                  | UI language (en/de)                |
 
 Credentials are configured in `Services/AppSettings.cs`:
 ```csharp
@@ -278,7 +278,7 @@ public static string MqttPassword { get; set; } = "";      // Set via login
 
 ---
 
-## ?? Running the Application
+## ▶️ Running the Application
 
 ### Visual Studio 2022
 
@@ -287,7 +287,7 @@ public static string MqttPassword { get; set; } = "";      // Set via login
    - **Windows Machine** (recommended for development)
    - **Android Emulator** / Physical device
    - **iOS Simulator** / Physical device (macOS only)
-3. Press `F5` or click **? Start Debugging**
+3. Press `F5` or click **▶️ Start Debugging**
 
 ### Visual Studio Code
 
@@ -318,7 +318,7 @@ dotnet run --framework net8.0-android
 
 ---
 
-## ?? Usage
+## 🚀 Usage
 
 ### Login
 
@@ -328,10 +328,10 @@ dotnet run --framework net8.0-android
    - **Quick Login**: Tap "Guest" or "Admin" buttons
    - **Manual**: Enter credentials
 
-| User | Username | Password | Permissions |
-|------|----------|----------|-------------|
-| Guest | `guest` | `123` | View only (metrics, devices) |
-| Admin | `admin` | `admin` | Full control (toggle devices, settings) |
+| User  | Username | Password | Permissions                       |
+|-------|----------|----------|-----------------------------------|
+| Guest | `guest`  | `123`    | View only (metrics, devices)      |
+| Admin | `admin`  | `admin`  | Full control (toggle devices, settings) |
 
 ### Dashboard
 
@@ -364,55 +364,55 @@ dotnet run --framework net8.0-android
 
 ---
 
-## ?? Project Structure
+## 🗂️ Project Structure
 
 ```
 SmartHome2/
-??? ?? Models/                  # Data models (DTOs)
-?   ??? Dtos.cs                 # MetricsDto, DeviceDto
-??? ?? Services/                # Business logic
-?   ??? ApiClient.cs            # HTTP API client (Polly)
-?   ??? MqttService.cs          # MQTT client (MQTTnet)
-?   ??? SqliteDataStore.cs      # Local database (SQLite)
-?   ??? AppSettings.cs          # Configuration (Preferences)
-?   ??? IApiClient.cs           # Service interfaces
-??? ?? ViewModels/              # MVVM ViewModels
-?   ??? DashboardVm.cs          # Dashboard logic
-?   ??? DevicesVm.cs            # Device control
-?   ??? ChartsVm.cs             # Charts data binding
-?   ??? LoginVm.cs              # Authentication
-?   ??? SettingsVm.cs           # Configuration
-??? ?? Views/                   # XAML UI pages
-?   ??? LoginPage.xaml          # Login screen
-?   ??? DashboardPage.xaml      # Main dashboard
-?   ??? DevicesPage.xaml        # Device list
-?   ??? ChartsPage.xaml         # Charts visualization
-?   ??? SettingsPage.xaml       # Settings screen
-??? ?? Resources/               # Assets
-?   ??? Strings/                # Localization
-?   ?   ??? AppResources.cs     # EN/DE translations
-?   ??? Images/                 # Images/icons
-?   ??? Styles/                 # XAML styles
-??? ?? Utils/                   # Helper classes
-?   ??? BoolToOnOffConverter.cs # XAML converters
-?   ??? BoolToModeConverter.cs
-??? ?? Platforms/               # Platform-specific code
-?   ??? Windows/
-?   ??? Android/
-?   ??? iOS/
-??? ?? MauiProgram.cs           # DI container setup
-??? ?? App.xaml.cs              # Application entry point
-??? ?? AppShell.xaml            # Navigation shell
-??? ?? SmartHome2.csproj        # Project file
-??? ?? client.pfx               # MQTT client certificate
-??? ?? client-cert.pem          # PEM certificate
-??? ?? client-key.pem           # PEM private key
-??? ?? README.md                # This file
+├── Models/                  # Data models (DTOs)
+│   └── Dtos.cs              # MetricsDto, DeviceDto
+├── Services/                # Business logic
+│   ├── ApiClient.cs         # HTTP API client (Polly)
+│   ├── MqttService.cs       # MQTT client (MQTTnet)
+│   ├── SqliteDataStore.cs   # Local database (SQLite)
+│   ├── AppSettings.cs       # Configuration (Preferences)
+│   └── IApiClient.cs        # Service interfaces
+├── ViewModels/              # MVVM ViewModels
+│   ├── DashboardVm.cs       # Dashboard logic
+│   ├── DevicesVm.cs         # Device control
+│   ├── ChartsVm.cs          # Charts data binding
+│   ├── LoginVm.cs           # Authentication
+│   └── SettingsVm.cs        # Configuration
+├── Views/                   # XAML UI pages
+│   ├── LoginPage.xaml       # Login screen
+│   ├── DashboardPage.xaml   # Main dashboard
+│   ├── DevicesPage.xaml     # Device list
+│   ├── ChartsPage.xaml      # Charts visualization
+│   └── SettingsPage.xaml    # Settings screen
+├── Resources/               # Assets
+│   ├── Strings/             # Localization
+│   │   └── AppResources.cs  # EN/DE translations
+│   ├── Images/              # Images/icons
+│   └── Styles/              # XAML styles
+├── Utils/                   # Helper classes
+│   ├── BoolToOnOffConverter.cs # XAML converters
+│   └── BoolToModeConverter.cs
+├── Platforms/               # Platform-specific code
+│   ├── Windows/
+│   ├── Android/
+│   └── iOS/
+├── MauiProgram.cs           # DI container setup
+├── App.xaml.cs              # Application entry point
+├── AppShell.xaml            # Navigation shell
+├── SmartHome2.csproj        # Project file
+├── client.pfx               # MQTT client certificate
+├── client-cert.pem          # PEM certificate
+├── client-key.pem           # PEM private key
+└── README.md                # This file
 ```
 
 ---
 
-## ?? Development
+## 🧑‍💻 Development
 
 ### Code Style
 
@@ -429,7 +429,7 @@ SmartHome2/
 public partial class DashboardVm : ObservableObject
 {
     [ObservableProperty] private double temp;  // Auto-generates Temp property
-    
+
     [RelayCommand]  // Auto-generates RefreshCommand
     private async Task Refresh() { }
 }
@@ -475,11 +475,11 @@ Enable verbose logging:
 System.Diagnostics.Debug.WriteLine($"MQTT: Message received on {topic}: {payload}");
 ```
 
-View logs in Visual Studio: **Debug ? Windows ? Output** (select "Debug")
+View logs in Visual Studio: **Debug → Windows → Output** (select "Debug")
 
 ---
 
-## ?? Troubleshooting
+## 🆘 Troubleshooting
 
 ### Common Issues
 
@@ -491,11 +491,11 @@ MqttService: Failed to start - SocketException: Connection refused
 ```
 
 **Solutions:**
-- ? Check broker is running: `netstat -an | findstr 8883`
-- ? Verify firewall allows port 8883
-- ? Test with MQTT Explorer: `mqtt://127.0.0.1:8883`
-- ? Check ACL configuration allows user
-- ? Verify certificate paths in `MqttService.cs`
+- 🔎 Check broker is running: `netstat -an | findstr 8883`
+- 🔒 Verify firewall allows port 8883
+- 🛠️ Test with MQTT Explorer: `mqtt://127.0.0.1:8883`
+- 🔑 Check ACL configuration allows user
+- 📁 Verify certificate paths in `MqttService.cs`
 
 #### 2. **HTTP 404 Not Found**
 
@@ -505,10 +505,10 @@ ApiClient: GetMetricsAsync failed - 404 Not Found
 ```
 
 **Solutions:**
-- ? Ensure FastAPI server is running
-- ? Check BaseURL in Settings: `http://127.0.0.1:8000/`
-- ? Verify API endpoints: `curl http://127.0.0.1:8000/api/metrics`
-- ? Check server logs for errors
+- 🟢 Ensure FastAPI server is running
+- 🌎 Check BaseURL in Settings: `http://127.0.0.1:8000/`
+- 🧪 Verify API endpoints: `curl http://127.0.0.1:8000/api/metrics`
+- 📋 Check server logs for errors
 
 #### 3. **Certificate Validation Failed**
 
@@ -518,10 +518,10 @@ MqttService: TLS handshake failed - RemoteCertificateNameMismatch
 ```
 
 **Solutions:**
-- ? Set `AllowUntrustedCertificates = true` for self-signed certs
-- ? Install CA cert: `mkcert -install`
-- ? Regenerate certificates with correct hostname
-- ? Disable TLS for testing: `AppSettings.MqttUseTls = false`
+- ⚠️ Set `AllowUntrustedCertificates = true` for self-signed certs
+- 🏅 Install CA cert: `mkcert -install`
+- 🔄 Regenerate certificates with correct hostname
+- 🚫 Disable TLS for testing: `AppSettings.MqttUseTls = false`
 
 #### 4. **Localization Not Working**
 
@@ -529,9 +529,9 @@ MqttService: TLS handshake failed - RemoteCertificateNameMismatch
 - Buttons show old language after switching
 
 **Solutions:**
-- ? Navigate away and back to refresh UI
-- ? Restart app after language change
-- ? Check `AppResources.Instance.CurrentLanguage` is updated
+- 🔄 Navigate away and back to refresh UI
+- 🔄 Restart app after language change
+- 🧾 Check `AppResources.Instance.CurrentLanguage` is updated
 
 #### 5. **Database Locked**
 
@@ -541,9 +541,9 @@ SqliteDataStore: Database is locked
 ```
 
 **Solutions:**
-- ? Ensure `IDataStore` is registered as **Singleton**
-- ? Close all apps accessing the database
-- ? Delete database: `%LOCALAPPDATA%\Packages\[AppId]\LocalState\shd.db3`
+- 🟢 Ensure `IDataStore` is registered as **Singleton**
+- ❌ Close all apps accessing the database
+- 🚮 Delete database: `%LOCALAPPDATA%\Packages\[AppId]\LocalState\shd.db3`
 
 ### Debug Output
 
@@ -557,7 +557,7 @@ builder.Logging.SetMinimumLevel(LogLevel.Trace);
 
 ---
 
-## ?? Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please follow these guidelines:
 
@@ -582,13 +582,13 @@ Contributions are welcome! Please follow these guidelines:
 
 ---
 
-##  License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-##  Acknowledgments
+## 🙏 Acknowledgments
 
 - [.NET MAUI Team](https://github.com/dotnet/maui)
 - [MQTTnet](https://github.com/dotnet/MQTTnet)
@@ -598,8 +598,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-
-
----
-
-**Made  using .NET MAUI**
+**Made using .NET MAUI**
