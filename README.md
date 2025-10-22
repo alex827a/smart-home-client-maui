@@ -598,34 +598,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## ?? Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/SmartHome2/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/SmartHome2/discussions)
-- **Email**: support@smarthome2.example.com
 
 ---
 
-## ??? Roadmap
-
-### v1.1 (Next Release)
-- [ ] Dark theme support
-- [ ] Push notifications
-- [ ] Widget for home screen
-- [ ] Biometric authentication
-
-### v1.2
-- [ ] Multiple home support
-- [ ] Cloud sync
-- [ ] Voice control integration
-- [ ] Energy consumption analytics
-
-### v2.0
-- [ ] AI-powered automation
-- [ ] Scene management
-- [ ] Third-party integrations (Alexa, Google Home)
-- [ ] Web dashboard
-
----
-
-**Made with ?? using .NET MAUI**
+**Made  using .NET MAUI**
