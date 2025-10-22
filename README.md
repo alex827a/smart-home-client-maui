@@ -146,12 +146,6 @@ Cross-platform smart home monitoring and control application built with .NET MAU
    - Port: 8883 (TLS) or 1883 (non-TLS)
    - Download: https://mosquitto.org/download/
 
-### Optional Tools
-
-- **Git**: For version control
-- **Postman**: For API testing
-- **MQTT Explorer**: For MQTT debugging
-
 ---
 
 ## ⬇️ Installation
