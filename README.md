@@ -428,9 +428,6 @@ SmartHome2/
 ├── App.xaml.cs              # Application entry point
 ├── AppShell.xaml            # Navigation shell
 ├── SmartHome2.csproj        # Project file
-├── client.pfx               # MQTT client certificate
-├── client-cert.pem          # PEM certificate
-├── client-key.pem           # PEM private key
 └── README.md                # This file
 ```
 
