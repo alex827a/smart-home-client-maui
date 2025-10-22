@@ -582,13 +582,13 @@ Contributions are welcome! Please follow these guidelines:
 
 ---
 
-## ?? License
+##  License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## ?? Acknowledgments
+##  Acknowledgments
 
 - [.NET MAUI Team](https://github.com/dotnet/maui)
 - [MQTTnet](https://github.com/dotnet/MQTTnet)
