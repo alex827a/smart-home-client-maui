@@ -5,7 +5,8 @@
 [![MQTT](https://img.shields.io/badge/MQTT-4.3.7-660066?logo=mqtt)](https://mqtt.org/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Cross-platform smart home monitoring and control application built with .NET MAUI, featuring real-time MQTT updates and HTTP API integration.
+Cross-platform smart home monitoring and control application built with .NET MAUI, featuring real-time MQTT updates and HTTP API integration..
+
 Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https://github.com/alex827a/smart-home-backend.git)
 
 
