@@ -16,7 +16,6 @@ Cross-platform smart home monitoring and control application built with .NET MAU
 - [🛠️ Prerequisites](#prerequisites)
 - [⬇️ Installation](#installation)
 - [⚙️ Configuration](#configuration)
-- [▶️ Running the Application](#running-the-application)
 - [🚀 Usage](#usage)
 - [🗂️ Project Structure](#project-structure)
 - [🧑‍💻 Development](#development)
@@ -286,48 +285,6 @@ Credentials are configured in `Services/AppSettings.cs`:
 public static string MqttUsername { get; set; } = "guest"; // or "admin"
 public static string MqttPassword { get; set; } = "";      // Set via login
 ```
-
----
-
-## Running the Application
-
-### Visual Studio 2022
-
-1. Open `SmartHome2.sln`
-2. Select target platform:
-   - **Windows Machine** (recommended for development)
-   - **Android Emulator** / Physical device
-   - **iOS Simulator** / Physical device (macOS only)
-3. Press `F5` or click **▶️ Start Debugging**
-
-### Visual Studio Code
-
-```bash
-# Windows
-dotnet build -t:Run -f net8.0-windows10.0.19041.0
-
-# Android
-dotnet build -t:Run -f net8.0-android
-
-# iOS (macOS only)
-dotnet build -t:Run -f net8.0-ios
-```
-
-### Command Line
-
-```bash
-# Restore and build
-dotnet restore
-dotnet build
-
-# Run on Windows
-dotnet run --framework net8.0-windows10.0.19041.0
-
-# Run on Android (device must be connected)
-dotnet run --framework net8.0-android
-```
-
----
 
 ## Usage
 
