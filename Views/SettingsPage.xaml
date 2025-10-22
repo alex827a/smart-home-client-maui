@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:res="clr-namespace:SmartHome2.Resources.Strings"
+             x:Class="SmartHome2.Views.SettingsPage"
+             Title="{Binding Source={x:Static res:AppResources.Instance}, Path=Settings}">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label Text="{Binding Source={x:Static res:AppResources.Instance}, Path=ServerSettings}" FontSize="18" FontAttributes="Bold" />
+            
+            <Label Text="{Binding Source={x:Static res:AppResources.Instance}, Path=BaseUrl}" />
+            <Entry x:Name="BaseUrlEntry" 
+                   Text="{Binding BaseUrl}" 
+                   Placeholder="http://192.168.1.100:8000/" />
+            
+            <Label Text="{Binding Source={x:Static res:AppResources.Instance}, Path=RefreshIntervalLabel}" />
+            <Entry x:Name="RefreshIntervalEntry" 
+                   Text="{Binding RefreshInterval}" 
+                   Placeholder="5"
+                   Keyboard="Numeric" />
+            
+            <Label Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Language}" FontSize="18" FontAttributes="Bold" Margin="0,20,0,0" />
+            <Picker x:Name="LanguagePicker"
+                    SelectedIndex="{Binding LanguageIndex}"
+                    Title="Select Language">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>English</x:String>
+                        <x:String>Deutsch</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            
+            <Button Text="{Binding Source={x:Static res:AppResources.Instance}, Path=SaveSettings}" 
+                    Command="{Binding SaveSettingsCommand}" 
+                    BackgroundColor="Green" 
+                    TextColor="White" />
+            
+            <Label Text="{Binding StatusMessage}" 
+                   TextColor="Blue" 
+                   IsVisible="{Binding ShowStatus}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

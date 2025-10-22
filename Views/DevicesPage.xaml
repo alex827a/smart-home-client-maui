@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartHome2.Views.DevicesPage"
+             xmlns:utils="clr-namespace:SmartHome2.Utils"
+             xmlns:res="clr-namespace:SmartHome2.Resources.Strings"
+             Title="{Binding Source={x:Static res:AppResources.Instance}, Path=Devices}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <utils:BoolToOnOffConverter x:Key="BoolToOnOffConverter"/>
+            <utils:BoolToModeConverter x:Key="BoolToModeConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <VerticalStackLayout>
+        <HorizontalStackLayout Padding="15,10" Spacing="5">
+            <Label Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Mode}" FontSize="12" TextColor="Gray"/>
+            <Label Text=":" FontSize="12" TextColor="Gray"/>
+            <Label FontSize="12" TextColor="Gray">
+                <Label.Text>
+                    <MultiBinding Converter="{StaticResource BoolToModeConverter}">
+                        <Binding Path="CanToggleDevices"/>
+                    </MultiBinding>
+                </Label.Text>
+            </Label>
+        </HorizontalStackLayout>
+        
+        <CollectionView ItemsSource="{Binding Devices}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="15" ColumnDefinitions="*, Auto, Auto">
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" />
+                            <Label Text="{Binding Id}" FontSize="14" TextColor="Gray" />
+                        </VerticalStackLayout>
+                        <Label Grid.Column="1" 
+                               Text="{Binding IsOn, Converter={StaticResource BoolToOnOffConverter}}" 
+                               FontSize="16" 
+                               VerticalOptions="Center"
+                               Margin="0,0,10,0" />
+                        <Button Grid.Column="2" 
+                                Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Toggle}" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleDeviceCommand}"
+                                CommandParameter="{Binding .}"
+                                VerticalOptions="Center"
+                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CanToggleDevices}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>

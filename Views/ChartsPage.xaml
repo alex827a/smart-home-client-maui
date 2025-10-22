@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             xmlns:res="clr-namespace:SmartHome2.Resources.Strings"
+             x:Class="SmartHome2.Views.ChartsPage"
+             Title="{Binding Source={x:Static res:AppResources.Instance}, Path=MetricsCharts}">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="10" Spacing="10">
+                
+                <HorizontalStackLayout Spacing="10" Margin="0,0,0,10">
+                    <Label VerticalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Role}"/>
+                                <Span Text=": "/>
+                                <Span Text="{Binding UserRole}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Button Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Logout}" 
+                            Clicked="OnLogoutClicked"
+                            BackgroundColor="Red"
+                            TextColor="White"
+                            Padding="10,5"
+                            CornerRadius="5"
+                            HorizontalOptions="EndAndExpand"/>
+                </HorizontalStackLayout>
+                
+                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Margin="0,0,0,10">
+                    <Label Text="{Binding Status}" VerticalOptions="Center" />
+                    <Button Command="{Binding ToggleModeCommand}">
+                        <Button.Text>
+                            <MultiBinding Converter="{StaticResource BoolToRealtimeConverter}">
+                                <Binding Path="IsRealtime"/>
+                                <Binding Source="{x:Static res:AppResources.Instance}" Path="SwitchToHistory"/>
+                                <Binding Source="{x:Static res:AppResources.Instance}" Path="SwitchToRealtime"/>
+                            </MultiBinding>
+                        </Button.Text>
+                    </Button>
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Margin="0,0,0,10">
+                    <Label Text="{Binding Source={x:Static res:AppResources.Instance}, Path=MaxDataPoints}" VerticalOptions="Center"/>
+                    <Entry x:Name="MaxPointsEntry" 
+                           Text="{Binding MaxDataPoints}" 
+                           Keyboard="Numeric"
+                           WidthRequest="80"
+                           VerticalOptions="Center"/>
+                    <Button Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Set}" 
+                            Command="{Binding SetMaxPointsCommand}"
+                            CommandParameter="{Binding Source={x:Reference MaxPointsEntry}, Path=Text}"
+                            Padding="10,5"/>
+                    <Button Text="50" Command="{Binding SetMaxPointsCommand}" CommandParameter="50" Padding="5"/>
+                    <Button Text="100" Command="{Binding SetMaxPointsCommand}" CommandParameter="100" Padding="5"/>
+                    <Button Text="200" Command="{Binding SetMaxPointsCommand}" CommandParameter="200" Padding="5"/>
+                </HorizontalStackLayout>
+
+                <Label Text="{Binding Source={x:Static res:AppResources.Instance}, Path=TemperatureTrend}" FontSize="16" FontAttributes="Bold" Margin="0,10,0,0" />
+                <lvc:CartesianChart Series="{Binding TempSeries}" 
+                                    HeightRequest="250"
+                                    ZoomMode="X"/>
+
+                <Label Text="{Binding Source={x:Static res:AppResources.Instance}, Path=HumidityTrend}" FontSize="16" FontAttributes="Bold" Margin="0,10,0,0" />
+                <lvc:CartesianChart Series="{Binding HumiditySeries}" 
+                                    HeightRequest="250"
+                                    ZoomMode="X"/>
+
+                <Label Text="{Binding Source={x:Static res:AppResources.Instance}, Path=PowerTrend}" FontSize="16" FontAttributes="Bold" Margin="0,10,0,0" />
+                <lvc:CartesianChart Series="{Binding PowerSeries}" 
+                                    HeightRequest="250"
+                                    ZoomMode="X"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

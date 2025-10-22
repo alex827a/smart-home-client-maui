@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:res="clr-namespace:SmartHome2.Resources.Strings"
+             x:Class="SmartHome2.Views.DashboardPage"
+             Title="{Binding Source={x:Static res:AppResources.Instance}, Path=Dashboard}">
+    <Grid RowDefinitions="Auto,*">
+        <!-- Header with logout button outside RefreshView -->
+        <HorizontalStackLayout Grid.Row="0" Spacing="10" Margin="20,10" >
+            <Label FontAttributes="Bold" VerticalOptions="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Role}"/>
+                        <Span Text=": "/>
+                        <Span Text="{Binding UserRole}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Button Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Logout}" 
+                    Clicked="OnLogoutClicked"
+                    BackgroundColor="Red"
+                    TextColor="White"
+                    Padding="10,5"
+                    CornerRadius="5"
+                    HorizontalOptions="EndAndExpand"
+                    ZIndex="1000"/>
+        </HorizontalStackLayout>
+        
+        <!-- Content inside RefreshView -->
+        <RefreshView Grid.Row="1" Command="{Binding RefreshAsyncCommand}">
+            <VerticalStackLayout Padding="20" Spacing="8">
+                
+                <Label Text="{Binding Status}" />
+                <Label FontSize="12" TextColor="Gray">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Mqtt}"/>
+                            <Span Text=": "/>
+                            <Span Text="{Binding MqttStatus}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Temperature}"/>
+                            <Span Text=": "/>
+                            <Span Text="{Binding Temp}"/>
+                            <Span Text=" °C"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Humidity}"/>
+                            <Span Text=": "/>
+                            <Span Text="{Binding Humidity}"/>
+                            <Span Text="%"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Power}"/>
+                            <Span Text=": "/>
+                            <Span Text="{Binding Power}"/>
+                            <Span Text=" W"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Updated}"/>
+                            <Span Text=": "/>
+                            <Span Text="{Binding Ts}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Button Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Refresh}" 
+                        Command="{Binding RefreshAsyncCommand}" 
+                        Clicked="OnRefreshClicked"/>
+                <Button Text="{Binding Source={x:Static res:AppResources.Instance}, Path=OpenDevices}" 
+                        Clicked="OpenDevices_OnClicked"/>
+                <Button Text="{Binding Source={x:Static res:AppResources.Instance}, Path=ViewCharts}" 
+                        Clicked="OpenCharts_OnClicked"/>
+                <Button Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Settings}" 
+                        Clicked="OpenSettings_OnClicked" 
+                        IsVisible="{Binding IsAdmin}"/>
+            </VerticalStackLayout>
+        </RefreshView>
+    </Grid>
+</ContentPage>
