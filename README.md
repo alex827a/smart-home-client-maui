@@ -171,41 +171,49 @@ dotnet restore
 
 Or in Visual Studio: `Right-click Solution → Restore NuGet Packages`
 
-### 3. Setup MQTT Certificates (for TLS)
+#### 3. Setup MQTT Certificates (for TLS)
 
-#### Option A: Use Included Certificates (Development)
+**⚠️ Certificates not included!**
+To enable secure TLS connections, you must generate your own development certificates.
 
-The project includes pre-generated mkcert certificates:
-- `client.pfx` (Windows-compatible)
-- `client-cert.pem` + `client-key.pem` (PEM format)
+##### How to Generate MQTT Certificates
 
-These are already configured in the project.
+1. **Install mkcert:**
+   ```bash
+   # Windows (using Scoop)
+   scoop install mkcert
 
-#### Option B: Generate Your Own Certificates
+   # macOS (using Homebrew)
+   brew install mkcert
 
-```bash
-# Install mkcert
-# Windows: scoop install mkcert
-# macOS: brew install mkcert
-# Linux: https://github.com/FiloSottile/mkcert#installation
+   # Linux
+   # See instructions: https://github.com/FiloSottile/mkcert#installation
+   ```
 
-# Generate CA and certificates
-mkcert -install
-mkcert -client localhost 127.0.0.1 ::1
+2. **Generate CA and client certificates:**
+   ```bash
+   mkcert -install
+   mkcert -client localhost 127.0.0.1 ::1
+   ```
+   This will produce files such as:
+   - `localhost+2-client.pem`
+   - `localhost+2-client-key.pem`
 
-# Convert to PFX (Windows)
-.\ConvertToPfx.ps1
-# OR use PfxConverter utility
-cd PfxConverter
-dotnet run
-```
+3. **(Optional) Convert PEM to PFX for Windows:**
+   ```powershell
+   # Example using OpenSSL
+   openssl pkcs12 -export -out client.pfx -inkey localhost+2-client-key.pem -in localhost+2-client.pem -certfile rootCA.pem
+   ```
 
-Place generated files in project root:
-- `client.pfx`
-- `client-cert.pem`
-- `client-key.pem`
+4. **Place the generated files in the project root:**
+   - `client.pfx`
+   - `client-cert.pem`
+   - `client-key.pem`
 
----
+5. **Update your app and broker configuration to point to these files.**
+
+For more details, refer to [mkcert documentation](https://github.com/FiloSottile/mkcert).
+
 
 ## ⚙️ Configuration
 
