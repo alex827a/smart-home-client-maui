@@ -138,7 +138,7 @@ Cross-platform smart home monitoring and control application built with .NET MAU
 ### Backend Services
 
 4. **FastAPI Server** (Python)
-   - Repository: `[your-fastapi-repo]`
+   - Repository: https://github.com/alex827a/smart-home-backend.git
    - Default URL: `http://127.0.0.1:8000`
 
 5. **Mosquitto MQTT Broker**
@@ -211,8 +211,10 @@ Place generated files in project root:
 
 ### 1. Backend Server Setup
 
-Ensure your FastAPI server is running:
+FastAPI backend repository: [alex827a/smart-home-backend](https://github.com/alex827a/smart-home-backend.git)
 
+Ensure your FastAPI server is running:
+...
 ```bash
 cd /path/to/fastapi-server
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
