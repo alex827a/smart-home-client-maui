@@ -40,7 +40,7 @@ Cross-platform smart home monitoring and control application built with .NET MAU
 - **Visual Feedback**: Real-time device state updates
 
 ### 🌐 Internationalization
-- **Multi-language Support**: English and German (Deutsch)
+- **Multi-language Support**: English and German 
 - **Dynamic Language Switching**: Change language without app restart
 - **Localized UI**: All screens fully translated
 
@@ -50,11 +50,6 @@ Cross-platform smart home monitoring and control application built with .NET MAU
 - **ACL Integration**: Mosquitto ACL enforcement
 - **Secure Credentials**: Persistent credential storage
 
-### 🖥️ Modern UI/UX
-- **Material Design**: Clean, responsive interface
-- **Cross-Platform**: Windows, Android, iOS, macOS
-- **Pull-to-Refresh**: Intuitive gesture controls
-- **Dark Theme Support**: (Coming soon)
 
 ---
 
@@ -153,7 +148,7 @@ Cross-platform smart home monitoring and control application built with .NET MAU
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/SmartHome2.git
+git clone https://github.com/alex827a/smart-home-client-maui.git
 cd SmartHome2
 ```
 
@@ -492,110 +487,6 @@ System.Diagnostics.Debug.WriteLine($"MQTT: Message received on {topic}: {payload
 
 View logs in Visual Studio: **Debug → Windows → Output** (select "Debug")
 
----
-
-## 🆘 Troubleshooting
-
-### Common Issues
-
-#### 1. **MQTT Connection Failed**
-
-**Symptoms:**
-```
-MqttService: Failed to start - SocketException: Connection refused
-```
-
-**Solutions:**
-- 🔎 Check broker is running: `netstat -an | findstr 8883`
-- 🔒 Verify firewall allows port 8883
-- 🛠️ Test with MQTT Explorer: `mqtt://127.0.0.1:8883`
-- 🔑 Check ACL configuration allows user
-- 📁 Verify certificate paths in `MqttService.cs`
-
-#### 2. **HTTP 404 Not Found**
-
-**Symptoms:**
-```
-ApiClient: GetMetricsAsync failed - 404 Not Found
-```
-
-**Solutions:**
-- 🟢 Ensure FastAPI server is running
-- 🌎 Check BaseURL in Settings: `http://127.0.0.1:8000/`
-- 🧪 Verify API endpoints: `curl http://127.0.0.1:8000/api/metrics`
-- 📋 Check server logs for errors
-
-#### 3. **Certificate Validation Failed**
-
-**Symptoms:**
-```
-MqttService: TLS handshake failed - RemoteCertificateNameMismatch
-```
-
-**Solutions:**
-- ⚠️ Set `AllowUntrustedCertificates = true` for self-signed certs
-- 🏅 Install CA cert: `mkcert -install`
-- 🔄 Regenerate certificates with correct hostname
-- 🚫 Disable TLS for testing: `AppSettings.MqttUseTls = false`
-
-#### 4. **Localization Not Working**
-
-**Symptoms:**
-- Buttons show old language after switching
-
-**Solutions:**
-- 🔄 Navigate away and back to refresh UI
-- 🔄 Restart app after language change
-- 🧾 Check `AppResources.Instance.CurrentLanguage` is updated
-
-#### 5. **Database Locked**
-
-**Symptoms:**
-```
-SqliteDataStore: Database is locked
-```
-
-**Solutions:**
-- 🟢 Ensure `IDataStore` is registered as **Singleton**
-- ❌ Close all apps accessing the database
-- 🚮 Delete database: `%LOCALAPPDATA%\Packages\[AppId]\LocalState\shd.db3`
-
-### Debug Output
-
-Enable detailed logging in `MauiProgram.cs`:
-```csharp
-#if DEBUG
-builder.Logging.AddDebug();
-builder.Logging.SetMinimumLevel(LogLevel.Trace);
-#endif
-```
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-### Branching Strategy
-- `main` - Production-ready code
-- `develop` - Development branch
-- `feature/*` - New features
-- `bugfix/*` - Bug fixes
-
-### Pull Request Process
-1. Fork the repository
-2. Create feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
-5. Open Pull Request
-
-### Code Standards
-- Follow Microsoft C# naming conventions
-- Add XML documentation for public APIs
-- Include unit tests for new features
-- Update README.md if needed
-
----
 
 ## 📄 License
 
