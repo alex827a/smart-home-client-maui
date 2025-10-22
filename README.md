@@ -7,7 +7,7 @@
 
 Cross-platform smart home monitoring and control application built with .NET MAUI, featuring real-time MQTT updates and HTTP API integration.
 
-![SmartHome2 Dashboard](docs/screenshots/dashboard.png)
+
 
 ## 📋 Table of Contents
 
