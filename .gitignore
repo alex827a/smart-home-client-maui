@@ -304,10 +304,10 @@ Temporary Items
 *.sqlite3
 
 ## Certificates (keep templates, ignore actual certs)
-# *.pfx
-# *.pem
-# *.crt
-# *.key
+*.pfx
+*.pem
+*.crt
+*.key
 # Uncomment above if you want to exclude certificates
 
 ## Configuration files with secrets

@@ -56,8 +56,6 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 		
 		<!-- MQTT Certificates -->
-		<MauiAsset Include="client-cert.pem" />
-		<MauiAsset Include="client-key.pem" />
 		<MauiAsset Include="client.pfx" />
 	</ItemGroup>
 

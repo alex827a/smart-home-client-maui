@@ -45,7 +45,7 @@ namespace SmartHome2.Services
 
         public static bool MqttUseClientCerts
         {
-            get => Preferences.Get(MqttUseClientCertsKey, true);
+            get => Preferences.Get(MqttUseClientCertsKey, false); // Changed from true to false
             set => Preferences.Set(MqttUseClientCertsKey, value);
         }
 
