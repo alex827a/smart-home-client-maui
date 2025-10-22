@@ -13,10 +13,10 @@ Cross-platform smart home monitoring and control application built with .NET MAU
 
 - [⚡ Features](#-features)
 - [🧩 Architecture](#-architecture)
-- [🛠️ Prerequisites](#-Prerequisites)
-- [⬇️ Installation](#-installation)
+- [🛠️ Prerequisites](#-prerequisites)
+- [⬇️ Installation](#installation)
 - [⚙️ Configuration](#-configuration)
-- [▶️ Running the Application](#-running-the-application)
+- [▶️ Running the Application](#running-the-application)
 - [🚀 Usage](#-usage)
 - [🗂️ Project Structure](#-project-structure)
 - [🧑‍💻 Development](#-development)
