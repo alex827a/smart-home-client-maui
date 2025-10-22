@@ -141,7 +141,7 @@ Cross-platform smart home monitoring and control application built with .NET MAU
 
 ---
 
-## ⬇️ Installation
+##  Installation
 
 ### 1. Clone the Repository
 
@@ -202,7 +202,7 @@ To enable secure TLS connections, you must generate your own development certifi
 For more details, refer to [mkcert documentation](https://github.com/FiloSottile/mkcert).
 
 
-## ⚙️ Configuration
+## Configuration
 
 ### 1. Backend Server Setup
 
@@ -289,7 +289,7 @@ public static string MqttPassword { get; set; } = "";      // Set via login
 
 ---
 
-## ▶️ Running the Application
+## Running the Application
 
 ### Visual Studio 2022
 
