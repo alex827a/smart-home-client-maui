@@ -158,14 +158,29 @@ dotnet restore
 
 Or in Visual Studio: `Right-click Solution → Restore NuGet Packages`
 
-#### 3. Setup MQTT Certificates (for TLS)
+#### 3. Setup MQTT Certificates (Optional - TLS mTLS)
 
-**⚠️ Certificates not included!**
-To enable secure TLS connections, you must generate your own development certificates.
+**ℹ️ Client certificates are disabled by default!**
 
-##### How to Generate MQTT Certificates
+The application uses **username/password authentication** by default (`guest:123` or `admin:admin`). 
+Client certificates (mTLS) are **optional** and only needed if you want to enable certificate-based authentication.
 
-1. **Install mkcert:**
+##### Current Configuration
+- **Default**: `AppSettings.MqttUseClientCerts = false` (username/password only)
+- **Optional**: Set to `true` in `Services/AppSettings.cs` to enable mTLS
+
+##### How to Enable Client Certificate Authentication (Optional)
+
+1. **Update `Services/AppSettings.cs`:**
+   ```csharp
+   public static bool MqttUseClientCerts
+   {
+       get => Preferences.Get(MqttUseClientCertsKey, true); // Change false to true
+       set => Preferences.Set(MqttUseClientCertsKey, value);
+   }
+   ```
+
+2. **Generate client certificates using mkcert:**
    ```bash
    # Windows (using Scoop)
    scoop install mkcert
@@ -177,7 +192,7 @@ To enable secure TLS connections, you must generate your own development certifi
    # See instructions: https://github.com/FiloSottile/mkcert#installation
    ```
 
-2. **Generate CA and client certificates:**
+3. **Generate CA and client certificates:**
    ```bash
    mkcert -install
    mkcert -client localhost 127.0.0.1 ::1
@@ -186,18 +201,21 @@ To enable secure TLS connections, you must generate your own development certifi
    - `localhost+2-client.pem`
    - `localhost+2-client-key.pem`
 
-3. **(Optional) Convert PEM to PFX for Windows:**
+4. **(Optional) Convert PEM to PFX for Windows:**
    ```powershell
    # Example using OpenSSL
    openssl pkcs12 -export -out client.pfx -inkey localhost+2-client-key.pem -in localhost+2-client.pem -certfile rootCA.pem
    ```
 
-4. **Place the generated files in the project root:**
+5. **Place the generated files in the project root:**
    - `client.pfx`
    - `client-cert.pem`
    - `client-key.pem`
 
-5. **Update your app and broker configuration to point to these files.**
+6. **Update Mosquitto broker configuration (`mosquitto.conf`):**
+   ```conf
+   require_certificate true  # Enable client certificate requirement
+   ```
 
 For more details, refer to [mkcert documentation](https://github.com/FiloSottile/mkcert).
 
@@ -229,15 +247,22 @@ API Endpoints required:
 listener 8883
 certfile /path/to/server-cert.pem
 keyfile /path/to/server-key.pem
-cafile /path/to/ca-cert.pem
 
-# Authentication
+# Client certificate authentication (mTLS) - DISABLED by default
+require_certificate false  # Set to true only if enabling mTLS in app
+
+# Username/password authentication - ENABLED by default
 allow_anonymous false
 password_file /path/to/passwd
 
 # ACL
 acl_file /path/to/acl.conf
 ```
+
+**Note:** 
+- With `require_certificate false`, only username/password authentication is used
+- Server still uses TLS for encryption (recommended)
+- Set `require_certificate true` only if you enable `MqttUseClientCerts` in the app
 
 #### ACL Configuration (`acl.conf`):
 
