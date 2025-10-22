@@ -60,7 +60,7 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
             |                                   |
             v                                   v
 +-----------------------------+        +-----------------------------+
-|        Services Layer        |<------>|   Utils / Converters        |
+|        Services Layer        |<------>|   Utils / Converters       |
 | (ApiClient, MqttService,    |        +-----------------------------+
 |  SqliteDataStore, etc.)     |
 +-----------------------------+
