@@ -398,9 +398,6 @@ for line in response.iter_lines():
 ---
 
 ## 📖 Additional Documentation
-
-- **🆕 [SSE_AUTH_IMPLEMENTATION.md](SSE_AUTH_IMPLEMENTATION.md)** - SSE authentication implementation details
-- **🆕 [SSE_AUTH_TESTING.md](SSE_AUTH_TESTING.md)** - Testing guide for authenticated SSE
 - **[docs/FALLBACK.md](docs/FALLBACK.md)** - Complete fallback architecture documentation
 - **[docs/FALLBACK_QUICKSTART.md](docs/FALLBACK_QUICKSTART.md)** - Quick start guide for SSE mode
 - **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Detailed system architecture
