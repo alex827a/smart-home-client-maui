@@ -47,14 +47,18 @@ Python 3.10 or higher
 
 2️⃣ Run the Backend Server
 
-Clone or download the backend repo → Smart-Home-Backend 🔗
+Clone or download the backend repo → https://github.com/alex827a/smart-home-backend.git
+
 Then choose one of two ways to launch it:
+
 
 🔹 Option A — Simple mode (no MQTT, for quick test)
 
+
 python run_server.py
 
-Server starts on http://127.0.0.1:8000
+Server starts on http://127.0.0.1:8001
+
 ✅ Works via REST and SSE (fallback realtime).
 
 🔹 Option B — Full mode (MQTT + TLS)
@@ -62,7 +66,9 @@ Server starts on http://127.0.0.1:8000
 .\start_server_with_mqtt_tls.ps1
 
 Requires Mosquitto and local certificates (certs/).
+
 Starts FastAPI on port 8000 and MQTT on 8883 / 8884.
+
 Use admin/guest accounts as defined in ACL.
 
 
@@ -78,7 +84,7 @@ Use admin/guest accounts as defined in ACL.
 
 3. In Settings set:
 
-Backend URL = http://127.0.0.1:8000
+Backend URL = http://127.0.0.1:8001
 MQTT Host   = localhost
 MQTT Port   = 8883
 Use MQTT    = ON (optional)
