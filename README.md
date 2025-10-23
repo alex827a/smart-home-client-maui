@@ -20,6 +20,7 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 
 ## 📋 Table of Contents
 
+- [🚀 Quick Start](#quick-start)
 - [⚡ Features](#features)
 - [🖼️ Screenshots](#screenshots)
 - [🧩 Architecture](#architecture)
@@ -30,7 +31,94 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 - [📄 License](#license)
 
 ---
+## Quick Start
 
+1️⃣ Install prerequisites (Windows only once)
+
+.NET 8 Desktop Runtime
+
+Microsoft Windows App Runtime 1.5 x64
+
+Python 3.10 or higher
+
+
+
+---
+
+2️⃣ Run the Backend Server
+
+Clone or download the backend repo → Smart-Home-Backend 🔗
+Then choose one of two ways to launch it:
+
+🔹 Option A — Simple mode (no MQTT, for quick test)
+
+python run_server.py
+
+Server starts on http://127.0.0.1:8000
+✅ Works via REST and SSE (fallback realtime).
+
+🔹 Option B — Full mode (MQTT + TLS)
+
+.\start_server_with_mqtt_tls.ps1
+
+Requires Mosquitto and local certificates (certs/).
+Starts FastAPI on port 8000 and MQTT on 8883 / 8884.
+Use admin/guest accounts as defined in ACL.
+
+
+---
+
+3️⃣ Run the MAUI Client
+
+1. Download latest build → 📦 SmartHome2-win-x64.zip
+
+
+2. Unzip and run SmartHome2.exe
+
+
+3. In Settings set:
+
+Backend URL = http://127.0.0.1:8000
+MQTT Host   = localhost
+MQTT Port   = 8883
+Use MQTT    = ON (optional)
+
+
+4. Login as:
+
+admin / admin123 (Full access)
+
+guest / guest123 (Read-only)
+
+
+
+
+
+---
+
+4️⃣ Verify
+
+Open browser: http://127.0.0.1:8000/docs → Swagger UI available.
+
+In app: devices list updates, metrics change live (if MQTT connected).
+
+If MQTT is offline → app switches to SSE fallback mode (REST only).
+
+
+
+---
+
+⚙️ Notes
+
+Port Service Description
+
+8000 FastAPI Backend REST + SSE
+8883 MQTT TLS Secure connection (admin)
+8884 MQTT TLS (no cert) Guest mode (optional)
+
+
+Firewall: allow TCP 8000 / 8883 / 8884.
+Certificates: not included in repo → generate via mkcert.
 ## Features
 
 ### 📟 Real-time Monitoring
