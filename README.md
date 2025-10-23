@@ -453,60 +453,7 @@ System.Diagnostics.Debug.WriteLine($"MQTT: Message received on {topic}: {payload
 
 View logs in Visual Studio: **Debug → Windows → Output** (select "Debug")
 
-### Testing Connection Modes
 
-**Test SSE with Authentication:**
-
-**Test SSE Fallback (Guest - Read-only):**
-```bash
-# Terminal 1: Start FastAPI with auth
-export GUEST_PASSWORD="123"
-export ADMIN_PASSWORD="admin123"
-python main.py
-
-# Launch app → Login as guest:123
-# Expected: "Connection: Connected (SSE)" ✅
-# Try to toggle device → "User 'guest' cannot control devices" ❌
-```
-
-**Test SSE Fallback (Admin - Full access):**
-```bash
-# Launch app → Login as admin:admin123
-# Expected: "Connection: Connected (SSE)" ✅
-# Try to toggle device → Success ✅
-```
-
-**Test with Curl:**
-```bash
-# Test authenticated API
-curl -u guest:123 http://127.0.0.1:8000/api/metrics
-
-# Test SSE stream
-curl -u admin:admin123 -N http://127.0.0.1:8000/api/events/stream
-
-# Test unauthorized access
-curl http://127.0.0.1:8000/api/metrics
-# Expected: 401 Unauthorized
-```
-
-**Test with Python SSE Client (with auth):**
-```python
-# examples/sse_client_demo.py
-import requests
-from requests.auth import HTTPBasicAuth
-
-response = requests.get(
-    'http://127.0.0.1:8000/api/events/stream',
-    auth=HTTPBasicAuth('guest', '123'),
-    stream=True
-)
-
-for line in response.iter_lines():
-    if line:
-        print(line.decode('utf-8'))
-```
-
----
 
 ## 📖 Additional Documentation
 - **[docs/FALLBACK.md](docs/FALLBACK.md)** - Complete fallback architecture documentation
