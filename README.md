@@ -11,8 +11,6 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 
 ---
 
-## 🆕 What's New in v2.0
-
 - **🔐 SSE Authentication**: Basic Authentication support for SSE fallback mode
 - **👥 Role-Based Access**: Separate permissions for guest (read-only) and admin (full control)
 - **🔒 Secure API**: All API endpoints now require authentication
@@ -40,14 +38,14 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 - **Live Metrics Dashboard**: Temperature, Humidity, Power consumption
 - **MQTT Push Notifications**: Instant updates without polling
 - **SSE Fallback Mode**: Automatic fallback to Server-Sent Events when MQTT unavailable
-- **🔐 Authenticated SSE**: Secure SSE connection with Basic Authentication
+- **Authenticated SSE**: Secure SSE connection with Basic Authentication
 - **Historical Charts**: Interactive LiveCharts with configurable data points
 - **Offline Support**: SQLite caching for offline operation
 
 ### 🕹️ Device Control
 - **Remote Device Management**: Toggle smart home devices (lights, fans, HVAC, etc.)
 - **Role-Based Access Control**: Admin and Guest user roles
-- **🔒 Permission Enforcement**: Guest users have read-only access
+- **Permission Enforcement**: Guest users have read-only access
 - **Visual Feedback**: Real-time device state updates
 
 ### 🌐 Internationalization
@@ -56,8 +54,8 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 - **Localized UI**: All screens fully translated
 
 ### 🔒 Security & Resilience
-- **🆕 HTTP Basic Authentication**: Secure API access with username/password
-- **🆕 SSE Authentication**: Protected SSE stream with role validation
+- ** HTTP Basic Authentication**: Secure API access with username/password
+- **SSE Authentication**: Protected SSE stream with role validation
 - **MQTT TLS/SSL**: Encrypted communication with broker
 - **Client Certificates**: mTLS authentication support (optional)
 - **ACL Integration**: Mosquitto ACL enforcement
@@ -165,7 +163,7 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 4. **FastAPI Server** (Python) - **Required**
    - Repository: https://github.com/alex827a/smart-home-backend.git
    - Default URL: `http://127.0.0.1:8000`
-   - **🆕 Authentication**: All endpoints require Basic Auth
+   - **Authentication**: All endpoints require Basic Auth
    - **Required endpoints:**
      - `GET /api/metrics` - Metrics data (🔒 authenticated)
      - `GET /api/devices` - Device list (🔒 authenticated)
@@ -185,7 +183,7 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 
 FastAPI backend repository: [alex827a/smart-home-backend](https://github.com/alex827a/smart-home-backend.git)
 
-**🆕 Set up environment variables:**
+** Set up environment variables:**
 ```bash
 # Guest user credentials (read-only)
 export GUEST_PASSWORD="123"
@@ -200,7 +198,7 @@ cd /path/to/fastapi-server
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-**🆕 Authentication Required:**
+**Authentication Required:**
 All API endpoints now require Basic Authentication. The client automatically sends credentials using the username/password from the login screen.
 
 **Required API Endpoints:**
@@ -247,18 +245,18 @@ You can run the app without MQTT broker - it will use HTTP Server-Sent Events in
 
 1. Launch the application
 2. Select language: **EN** / **DE**
-3. **🆕 Authentication Required**: Enter credentials or use Quick Login
+3. ** Authentication Required**: Enter credentials or use Quick Login
 4. Login options:
    - **Quick Login**: Tap "Guest" or "Admin" buttons
    - **Manual**: Enter credentials
-   - **🆕 Note**: Invalid credentials will result in connection failure
+   - ** Note**: Invalid credentials will result in connection failure
 
 | User  | Username | Password | Permissions                       | Fallback Mode |
 |-------|----------|----------|-----------------------------------|---------------|
 | Guest | `guest`  | `123`    | View only (metrics, devices)      | ✅ SSE supported (🔒 authenticated) |
 | Admin | `admin`  | `admin123` | Full control (toggle devices, settings) | ✅ SSE supported (🔒 authenticated) |
 
-**🆕 Permission Differences:**
+**Permission Differences:**
 - **Guest**: Can view metrics and device status, but **cannot** toggle devices (403 Forbidden)
 - **Admin**: Full access to all features including device control
 
@@ -285,9 +283,9 @@ SmartHome2/
 ├── Models/                  # Data models (DTOs)
 │   └── Dtos.cs              # MetricsDto, DeviceDto
 ├── Services/                # Business logic
-│   ├── RealtimeService.cs   # 🆕 Unified service with MQTT/SSE fallback
+│   ├── RealtimeService.cs   #  Unified service with MQTT/SSE fallback
 │   ├── MqttService.cs       # MQTT client (MQTTnet)
-│   ├── SseService.cs        # 🆕 SSE client for fallback mode
+│   ├── SseService.cs        #  SSE client for fallback mode
 │   ├── ApiClient.cs         # HTTP API client (Polly)
 │   ├── SqliteDataStore.cs   # Local database (SQLite)
 │   ├── AppSettings.cs       # Configuration (Preferences)
@@ -312,7 +310,7 @@ SmartHome2/
 ├── Utils/                   # Helper classes
 │   ├── BoolToOnOffConverter.cs # XAML converters
 │   └── BoolToModeConverter.cs
-├── docs/                    # 🆕 Documentation
+├── docs/                    #  Documentation
 │   ├── FALLBACK.md          # Fallback mode technical documentation
 │   ├── FALLBACK_QUICKSTART.md # Quick start guide for fallback
 │   ├── ARCHITECTURE.md      # Detailed architecture
@@ -407,9 +405,9 @@ for line in response.iter_lines():
 
 ---
 
-## 🔒 Security Notes
+##  Security Notes
 
-### ⚠️ Important for Production
+### Important for Production
 
 1. **Use HTTPS**: Always use HTTPS in production to protect credentials in transit
    ```bash
