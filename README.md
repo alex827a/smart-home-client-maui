@@ -1,4 +1,4 @@
-﻿# 🏠 SmartHome2 - .NET MAUI Smart Home Client
+﻿# 🏠 SmartHome - .NET MAUI Smart Home Client
 
 [![.NET MAUI](https://img.shields.io/badge/.NET%20MAUI-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/apps/maui)
 [![C#](https://img.shields.io/badge/C%23-12.0-239120?logo=csharp)](https://docs.microsoft.com/dotnet/csharp/)
