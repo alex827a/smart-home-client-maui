@@ -316,8 +316,6 @@ SmartHome2/
 │   ├── ARCHITECTURE.md      # Detailed architecture
 │   ├── CONFIGURATION.md     # Configuration guide
 │   └── ...                  # Other docs
-├── examples/                # 🆕 Example code
-│   └── sse_client_demo.py   # Python SSE client example
 ├── Platforms/               # Platform-specific code
 │   ├── Windows/
 │   ├── Android/
