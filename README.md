@@ -73,7 +73,7 @@ Server starts on http://127.0.0.1:8001
    ```
 
 
-  Requires Mosquitto and local certificates (see [MQTT/TLS setup guide](https://github.com/alex827a/smart-home-backend/blob/main/README_MQTT_TLS.md)).
+  Requires Mosquitto and local certificates (see [SmartHome Integration Guide](https://github.com/alex827a/smart-home-backend/blob/main/SMART_HOME_INTEGRATION.md)).
 
   Starts FastAPI on port 8001 and MQTT on 8883 / 8884.
 
