@@ -21,7 +21,7 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 ## 📋 Table of Contents
 
 - [⚡ Features](#features)
-- [⚡ Screenshots](#screenshots)
+- [🖼️ Screenshots](#screenshots)
 - [🧩 Architecture](#architecture)
 - [🛠️ Prerequisites](#prerequisites)
 - [⚙️ Configuration](#configuration)
