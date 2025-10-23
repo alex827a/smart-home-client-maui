@@ -233,7 +233,7 @@ All API endpoints now require Basic Authentication. The client automatically sen
 }
 ```
 
-**🆕 SSE Authentication:**
+**SSE Authentication:**
 SSE endpoint requires Basic Authentication:
 ```bash
 # Example: Connect as guest
@@ -282,7 +282,7 @@ You can run the app without MQTT broker - it will use HTTP Server-Sent Events in
 
 - View real-time metrics (Temperature, Humidity, Power)
 - See connection status and current mode (MQTT/SSE)
-- **🆕 User Role Display**: Shows current user role (Guest/Admin)
+- User Role Display: Shows current user role (Guest/Admin)
 - MQTT connection status indicator
 - Navigate to:
   - **Open Devices**: Control smart devices (admin) or view status (guest)
@@ -353,7 +353,7 @@ View logs in Visual Studio: **Debug → Windows → Output** (select "Debug")
 
 ### Testing Connection Modes
 
-**🆕 Test SSE with Authentication:**
+**Test SSE with Authentication:**
 
 **Test SSE Fallback (Guest - Read-only):**
 ```bash
