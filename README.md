@@ -67,7 +67,7 @@ Server starts on http://127.0.0.1:8001
 
 Requires Mosquitto and local certificates (certs/).
 
-Starts FastAPI on port 8000 and MQTT on 8883 / 8884.
+Starts FastAPI on port 8001 and MQTT on 8883 / 8884.
 
 Use admin/guest accounts as defined in ACL.
 
@@ -76,7 +76,7 @@ Use admin/guest accounts as defined in ACL.
 
 3️⃣ Run the MAUI Client
 
-1. Download latest build → 📦 SmartHome2-win-x64.zip
+1. Download latest build → 📦 [SmartHome2-win-x64.zip](https://github.com/alex827a/smart-home-client-maui/releases)
 
 
 2. Unzip and run SmartHome2.exe
