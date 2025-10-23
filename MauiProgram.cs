@@ -32,9 +32,15 @@ namespace SmartHome2
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetTimeoutPolicy());
             
+            // SSE Service (requires separate HttpClient with infinite timeout)
+            builder.Services.AddHttpClient<ISseService, SseService>();
+            
             // MQTT Service (Singleton - shared state is needed)
             builder.Services.AddSingleton<IMqttService, MqttService>();
             
+            // Unified Realtime Service with automatic fallback (Singleton)
+            builder.Services.AddSingleton<IRealtimeService, RealtimeService>();
+
             // ViewModels and Pages - Transient to prevent state issues
             builder.Services.AddTransient<LoginVm>();
             builder.Services.AddTransient<LoginPage>();

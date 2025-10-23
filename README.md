@@ -9,6 +9,16 @@ Cross-platform smart home monitoring and control application built with .NET MAU
 
 Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https://github.com/alex827a/smart-home-backend.git)
 
+---
+
+## 🆕 What's New in v2.0
+
+- **🔐 SSE Authentication**: Basic Authentication support for SSE fallback mode
+- **👥 Role-Based Access**: Separate permissions for guest (read-only) and admin (full control)
+- **🔒 Secure API**: All API endpoints now require authentication
+- **⚡ Auto-Reconnect**: Automatic reconnection with proper credential handling
+
+---
 
 ## 📋 Table of Contents
 
@@ -29,12 +39,15 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 ### 📟 Real-time Monitoring
 - **Live Metrics Dashboard**: Temperature, Humidity, Power consumption
 - **MQTT Push Notifications**: Instant updates without polling
+- **SSE Fallback Mode**: Automatic fallback to Server-Sent Events when MQTT unavailable
+- **🔐 Authenticated SSE**: Secure SSE connection with Basic Authentication
 - **Historical Charts**: Interactive LiveCharts with configurable data points
 - **Offline Support**: SQLite caching for offline operation
 
 ### 🕹️ Device Control
 - **Remote Device Management**: Toggle smart home devices (lights, fans, HVAC, etc.)
 - **Role-Based Access Control**: Admin and Guest user roles
+- **🔒 Permission Enforcement**: Guest users have read-only access
 - **Visual Feedback**: Real-time device state updates
 
 ### 🌐 Internationalization
@@ -42,10 +55,13 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 - **Dynamic Language Switching**: Change language without app restart
 - **Localized UI**: All screens fully translated
 
-### 🔒 Security
+### 🔒 Security & Resilience
+- **🆕 HTTP Basic Authentication**: Secure API access with username/password
+- **🆕 SSE Authentication**: Protected SSE stream with role validation
 - **MQTT TLS/SSL**: Encrypted communication with broker
-- **Client Certificates**: mTLS authentication support
+- **Client Certificates**: mTLS authentication support (optional)
 - **ACL Integration**: Mosquitto ACL enforcement
+- **Automatic Fallback**: Seamless switch to SSE when MQTT unavailable
 - **Secure Credentials**: Persistent credential storage
 
 
@@ -61,7 +77,8 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
             v                                   v
 +-----------------------------+        +-----------------------------+
 |        Services Layer        |<------>|   Utils / Converters       |
-| (ApiClient, MqttService,    |        +-----------------------------+
+| (RealtimeService, ApiClient,|        +-----------------------------+
+|  MqttService, SseService,   |
 |  SqliteDataStore, etc.)     |
 +-----------------------------+
             |
@@ -75,7 +92,8 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 +-----------------------------+
 |   Backend & Integrations    |
 |  - FastAPI Server (HTTP)    |
-|  - Mosquitto MQTT Broker    |
+|  - Mosquitto MQTT (optional)|
+|  - SSE Stream (fallback)    |
 +-----------------------------+
 ```
 
@@ -83,11 +101,24 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 
 - **MAUI UI**: User interface built with XAML pages.
 - **ViewModels (MVVM)**: Presentation logic, binds UI to business logic.
-- **Services Layer**: Handles interactions with external services (HTTP API, MQTT broker), data management and caching.
+- **Services Layer**: 
+  - **RealtimeService**: Unified real-time service with automatic MQTT/SSE fallback
+  - **MqttService**: MQTT client for primary real-time updates
+  - **SseService**: Server-Sent Events client for fallback mode
+  - **ApiClient**: HTTP API client with Polly resilience policies
+  - **SqliteDataStore**: Local caching and offline support
 - **Utils / Converters**: Helpers for data formatting and UI binding.
 - **Data Layer**: Local storage and data transfer objects (DTOs).
-- **Backend & Integrations**: FastAPI server for RESTful API, and Mosquitto for MQTT real-time communication.
+- **Backend & Integrations**: 
+  - **FastAPI server**: RESTful API and SSE stream endpoint
+  - **Mosquitto**: Optional MQTT broker for low-latency real-time updates
+  - **SSE fallback**: Server-Sent Events for guest mode when MQTT unavailable
 
+**Connection Modes:**
+
+1. **MQTT Mode** (Primary): Direct MQTT connection for fastest updates (~10ms latency)
+2. **SSE Mode** (Fallback): HTTP-based Server-Sent Events when MQTT unavailable (~100ms latency)
+3. **Offline Mode**: Cached data from SQLite when no connection available
 ---
 
 
@@ -102,6 +133,7 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 | **Database** | SQLite (sqlite-net-pcl) | 1.9.172 |
 | **HTTP Client** | Polly (Resilience) | 8.0.10 |
 | **MQTT** | MQTTnet | 4.3.7.1207 |
+| **SSE** | Built-in HttpClient | .NET 8 |
 | **Charts** | LiveChartsCore | 2.0.0-rc3.3 |
 | **UI** | SkiaSharp | Latest |
 
@@ -130,95 +162,22 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 
 ### Backend Services
 
-4. **FastAPI Server** (Python)
+4. **FastAPI Server** (Python) - **Required**
    - Repository: https://github.com/alex827a/smart-home-backend.git
    - Default URL: `http://127.0.0.1:8000`
+   - **🆕 Authentication**: All endpoints require Basic Auth
+   - **Required endpoints:**
+     - `GET /api/metrics` - Metrics data (🔒 authenticated)
+     - `GET /api/devices` - Device list (🔒 authenticated)
+     - `POST /api/devices/{id}/toggle` - Device control (🔒 admin only)
+     - `GET /api/status` - Server status (public)
+     - `GET /api/events/stream` - SSE fallback stream (🔒 authenticated)
 
-5. **Mosquitto MQTT Broker**
+5. **Mosquitto MQTT Broker** - **Optional** (fallback to SSE if unavailable)
    - Version: 2.0.18+
    - Port: 8883 (TLS) or 1883 (non-TLS)
    - Download: https://mosquitto.org/download/
-
----
-
-##  Installation
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/alex827a/smart-home-client-maui.git
-cd SmartHome2
-```
-
-### 2. Restore NuGet Packages
-
-```bash
-dotnet restore
-```
-
-Or in Visual Studio: `Right-click Solution → Restore NuGet Packages`
-
-#### 3. Setup MQTT Certificates (Optional - TLS mTLS)
-
-**ℹ️ Client certificates are disabled by default!**
-
-The application uses **username/password authentication** by default (`guest:123` or `admin:admin`). 
-Client certificates (mTLS) are **optional** and only needed if you want to enable certificate-based authentication.
-
-##### Current Configuration
-- **Default**: `AppSettings.MqttUseClientCerts = false` (username/password only)
-- **Optional**: Set to `true` in `Services/AppSettings.cs` to enable mTLS
-
-##### How to Enable Client Certificate Authentication (Optional)
-
-1. **Update `Services/AppSettings.cs`:**
-   ```csharp
-   public static bool MqttUseClientCerts
-   {
-       get => Preferences.Get(MqttUseClientCertsKey, true); // Change false to true
-       set => Preferences.Set(MqttUseClientCertsKey, value);
-   }
-   ```
-
-2. **Generate client certificates using mkcert:**
-   ```bash
-   # Windows (using Scoop)
-   scoop install mkcert
-
-   # macOS (using Homebrew)
-   brew install mkcert
-
-   # Linux
-   # See instructions: https://github.com/FiloSottile/mkcert#installation
-   ```
-
-3. **Generate CA and client certificates:**
-   ```bash
-   mkcert -install
-   mkcert -client localhost 127.0.0.1 ::1
-   ```
-   This will produce files such as:
-   - `localhost+2-client.pem`
-   - `localhost+2-client-key.pem`
-
-4. **(Optional) Convert PEM to PFX for Windows:**
-   ```powershell
-   # Example using OpenSSL
-   openssl pkcs12 -export -out client.pfx -inkey localhost+2-client-key.pem -in localhost+2-client.pem -certfile rootCA.pem
-   ```
-
-5. **Place the generated files in the project root:**
-   - `client.pfx`
-   - `client-cert.pem`
-   - `client-key.pem`
-
-6. **Update Mosquitto broker configuration (`mosquitto.conf`):**
-   ```conf
-   require_certificate true  # Enable client certificate requirement
-   ```
-
-For more details, refer to [mkcert documentation](https://github.com/FiloSottile/mkcert).
-
+   - **Note**: App automatically uses SSE fallback if Mosquitto is not running
 
 ## Configuration
 
@@ -226,91 +185,61 @@ For more details, refer to [mkcert documentation](https://github.com/FiloSottile
 
 FastAPI backend repository: [alex827a/smart-home-backend](https://github.com/alex827a/smart-home-backend.git)
 
+**🆕 Set up environment variables:**
+```bash
+# Guest user credentials (read-only)
+export GUEST_PASSWORD="123"
+
+# Admin user credentials (full access)
+export ADMIN_PASSWORD="admin123"
+```
+
 Ensure your FastAPI server is running:
-...
 ```bash
 cd /path/to/fastapi-server
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-API Endpoints required:
-- `GET /api/metrics` - Returns current sensor metrics
-- `GET /api/devices` - Returns list of devices
-- `POST /api/devices/{id}/toggle` - Toggles device state
+**🆕 Authentication Required:**
+All API endpoints now require Basic Authentication. The client automatically sends credentials using the username/password from the login screen.
 
-### 2. Mosquitto Broker Setup
+**Required API Endpoints:**
+- `GET /api/metrics` - Returns current sensor metrics (🔒 guest/admin)
+- `GET /api/devices` - Returns list of devices (🔒 guest/admin)
+- `POST /api/devices/{id}/toggle` - Toggles device state (🔒 admin only)
+- **`GET /api/status`** - Returns MQTT broker availability status (public)
+- **`GET /api/events/stream`** - SSE endpoint for real-time updates (🔒 guest/admin)
 
-#### Basic Configuration (`mosquitto.conf`):
-
-```conf
-# Listener
-listener 8883
-certfile /path/to/server-cert.pem
-keyfile /path/to/server-key.pem
-
-# Client certificate authentication (mTLS) - DISABLED by default
-require_certificate false  # Set to true only if enabling mTLS in app
-
-# Username/password authentication - ENABLED by default
-allow_anonymous false
-password_file /path/to/passwd
-
-# ACL
-acl_file /path/to/acl.conf
+**Example `/api/status` response:**
+```json
+{
+  "mqtt_available": false,
+  "mqtt_broker": "127.0.0.1",
+  "mqtt_port": 8883,
+  "recommended_mode": "sse",
+  "sse_clients_count": 1,
+  "timestamp": "2024-01-15T14:30:00"
+}
 ```
 
-**Note:** 
-- With `require_certificate false`, only username/password authentication is used
-- Server still uses TLS for encryption (recommended)
-- Set `require_certificate true` only if you enable `MqttUseClientCerts` in the app
-
-#### ACL Configuration (`acl.conf`):
-
-```conf
-# Admin user - full access
-user admin
-topic readwrite #
-
-# Guest user - read only
-user guest
-topic read home/+/metrics
-topic read home/+/state
-```
-
-#### Create Users:
-
+**🆕 SSE Authentication:**
+SSE endpoint requires Basic Authentication:
 ```bash
-mosquitto_passwd -c passwd admin
-# Enter password: admin
-
-mosquitto_passwd passwd guest
-# Enter password: 123
+# Example: Connect as guest
+curl -u guest:123 -N http://127.0.0.1:8000/api/events/stream
 ```
 
-#### Start Broker:
-
-```bash
-mosquitto -c mosquitto.conf -v
+**SSE Stream Format:**
+```
+data: {"topic":"system/connection","payload":{"status":"connected","user":"guest","role":"guest"},"timestamp":"..."}\n\n
+data: {"topic":"home/system/metrics","payload":{...},"timestamp":"..."}\n\n
+data: {"topic":"home/lamp/state","payload":{...},"timestamp":"..."}\n\n
 ```
 
-### 3. App Configuration
+### 2. Mosquitto Broker Setup (Optional)
 
-On first launch, configure in **Settings**:
-
-| Setting             | Default                | Description                        |
-|---------------------|-----------------------|------------------------------------|
-| **Base URL**        | `http://127.0.0.1:8000/` | FastAPI server address             |
-| **MQTT Broker**     | `127.0.0.1`           | Mosquitto broker IP                |
-| **MQTT Port**       | `8883`                | Broker port (8883=TLS, 1883=plain) |
-| **Use TLS**         | `true`                | Enable/disable TLS encryption      |
-| **Refresh Interval**| `5` seconds           | Polling interval (fallback)        |
-| **Language**        | `en`                  | UI language (en/de)                |
-
-Credentials are configured in `Services/AppSettings.cs`:
-```csharp
-public static string MqttUsername { get; set; } = "guest"; // or "admin"
-public static string MqttPassword { get; set; } = "";      // Set via login
-```
+**Note**: The app automatically falls back to SSE mode if Mosquitto is unavailable.
+You can run the app without MQTT broker - it will use HTTP Server-Sent Events instead
 
 ## Usage
 
@@ -318,67 +247,60 @@ public static string MqttPassword { get; set; } = "";      // Set via login
 
 1. Launch the application
 2. Select language: **EN** / **DE**
-3. Login options:
+3. **🆕 Authentication Required**: Enter credentials or use Quick Login
+4. Login options:
    - **Quick Login**: Tap "Guest" or "Admin" buttons
    - **Manual**: Enter credentials
+   - **🆕 Note**: Invalid credentials will result in connection failure
 
-| User  | Username | Password | Permissions                       |
-|-------|----------|----------|-----------------------------------|
-| Guest | `guest`  | `123`    | View only (metrics, devices)      |
-| Admin | `admin`  | `admin`  | Full control (toggle devices, settings) |
+| User  | Username | Password | Permissions                       | Fallback Mode |
+|-------|----------|----------|-----------------------------------|---------------|
+| Guest | `guest`  | `123`    | View only (metrics, devices)      | ✅ SSE supported (🔒 authenticated) |
+| Admin | `admin`  | `admin123` | Full control (toggle devices, settings) | ✅ SSE supported (🔒 authenticated) |
+
+**🆕 Permission Differences:**
+- **Guest**: Can view metrics and device status, but **cannot** toggle devices (403 Forbidden)
+- **Admin**: Full access to all features including device control
+
+**Connection Modes:**
+- 🟢 **MQTT Mode**: `Connection: Connected (MQTT)` - Full speed, ~10ms latency
+- 🟡 **SSE Mode**: `Connection: Connected (SSE)` - Fallback, ~100ms latency (🔒 authenticated)
+- 🔴 **Offline**: Uses cached data from SQLite
 
 ### Dashboard
 
 - View real-time metrics (Temperature, Humidity, Power)
-- See MQTT connection status
+- See connection status and current mode (MQTT/SSE)
+- **🆕 User Role Display**: Shows current user role (Guest/Admin)
+- MQTT connection status indicator
 - Navigate to:
-  - **Open Devices**: Control smart devices
+  - **Open Devices**: Control smart devices (admin) or view status (guest)
   - **View Charts**: Historical data visualization
   - **Settings**: App configuration (Admin only)
 
-### Devices
-
-- **Guest**: View device states only
-- **Admin**: Toggle devices on/off
-- Visual indicators: **An** (On) / **Aus** (Off) in German
-
-### Charts
-
-- Switch between **Realtime** and **History** modes
-- Configure data points: 50, 100, 200, or custom
-- Interactive zoom on X-axis
-- Three charts: Temperature, Humidity, Power
-
-### Settings (Admin Only)
-
-- Configure server URL
-- Adjust refresh interval
-- Change language (English/Deutsch)
-- Logout
-
----
-
-##  Project Structure
+## Project Structure
 
 ```
 SmartHome2/
 ├── Models/                  # Data models (DTOs)
 │   └── Dtos.cs              # MetricsDto, DeviceDto
 ├── Services/                # Business logic
-│   ├── ApiClient.cs         # HTTP API client (Polly)
+│   ├── RealtimeService.cs   # 🆕 Unified service with MQTT/SSE fallback
 │   ├── MqttService.cs       # MQTT client (MQTTnet)
+│   ├── SseService.cs        # 🆕 SSE client for fallback mode
+│   ├── ApiClient.cs         # HTTP API client (Polly)
 │   ├── SqliteDataStore.cs   # Local database (SQLite)
 │   ├── AppSettings.cs       # Configuration (Preferences)
 │   └── IApiClient.cs        # Service interfaces
 ├── ViewModels/              # MVVM ViewModels
-│   ├── DashboardVm.cs       # Dashboard logic
+│   ├── DashboardVm.cs       # Dashboard logic (uses RealtimeService)
 │   ├── DevicesVm.cs         # Device control
 │   ├── ChartsVm.cs          # Charts data binding
-│   ├── LoginVm.cs           # Authentication
+│   ├── LoginVm.cs           # Authentication (auto guest mode)
 │   └── SettingsVm.cs        # Configuration
 ├── Views/                   # XAML UI pages
-│   ├── LoginPage.xaml       # Login screen
-│   ├── DashboardPage.xaml   # Main dashboard
+│   ├── LoginPage.xaml       # Login screen (shows fallback banner)
+│   ├── DashboardPage.xaml   # Main dashboard (shows connection mode)
 │   ├── DevicesPage.xaml     # Device list
 │   ├── ChartsPage.xaml      # Charts visualization
 │   └── SettingsPage.xaml    # Settings screen
@@ -390,6 +312,14 @@ SmartHome2/
 ├── Utils/                   # Helper classes
 │   ├── BoolToOnOffConverter.cs # XAML converters
 │   └── BoolToModeConverter.cs
+├── docs/                    # 🆕 Documentation
+│   ├── FALLBACK.md          # Fallback mode technical documentation
+│   ├── FALLBACK_QUICKSTART.md # Quick start guide for fallback
+│   ├── ARCHITECTURE.md      # Detailed architecture
+│   ├── CONFIGURATION.md     # Configuration guide
+│   └── ...                  # Other docs
+├── examples/                # 🆕 Example code
+│   └── sse_client_demo.py   # Python SSE client example
 ├── Platforms/               # Platform-specific code
 │   ├── Windows/
 │   ├── Android/
@@ -399,63 +329,7 @@ SmartHome2/
 ├── AppShell.xaml            # Navigation shell
 ├── SmartHome2.csproj        # Project file
 └── README.md                # This file
-```
 
----
-
-## Development
-
-### Code Style
-
-- **C# 12.0** features (record types, pattern matching)
-- **MVVM pattern** with CommunityToolkit.Mvvm
-- **Async/await** for all I/O operations
-- **Dependency Injection** via `MauiProgram.cs`
-- **ConfigureAwait(false)** in services (not ViewModels)
-
-### Key Patterns
-
-#### 1. MVVM with Source Generators
-```csharp
-public partial class DashboardVm : ObservableObject
-{
-    [ObservableProperty] private double temp;  // Auto-generates Temp property
-
-    [RelayCommand]  // Auto-generates RefreshCommand
-    private async Task Refresh() { }
-}
-```
-
-#### 2. Resilience with Polly
-```csharp
-builder.Services.AddHttpClient<IApiClient, ApiClient>()
-    .AddPolicyHandler(GetRetryPolicy())        // 3 retries with exponential backoff
-    .AddPolicyHandler(GetTimeoutPolicy());     // 3-second timeout
-```
-
-#### 3. Resource Management
-```csharp
-public class SqliteDataStore : IDataStore, IAsyncDisposable
-{
-    public async ValueTask DisposeAsync()
-    {
-        await _db.CloseAsync().ConfigureAwait(false);
-        _initLock.Dispose();
-    }
-}
-```
-
-### Building Release Version
-
-```bash
-# Windows
-dotnet publish -f net8.0-windows10.0.19041.0 -c Release
-
-# Android APK
-dotnet publish -f net8.0-android -c Release -p:AndroidPackageFormat=apk
-
-# Android AAB (Google Play)
-dotnet publish -f net8.0-android -c Release -p:AndroidPackageFormat=aab
 ```
 
 ### Debugging MQTT
@@ -468,21 +342,104 @@ System.Diagnostics.Debug.WriteLine($"MQTT: Message received on {topic}: {payload
 
 View logs in Visual Studio: **Debug → Windows → Output** (select "Debug")
 
+### Testing Connection Modes
+
+**🆕 Test SSE with Authentication:**
+
+**Test SSE Fallback (Guest - Read-only):**
+```bash
+# Terminal 1: Start FastAPI with auth
+export GUEST_PASSWORD="123"
+export ADMIN_PASSWORD="admin123"
+python main.py
+
+# Launch app → Login as guest:123
+# Expected: "Connection: Connected (SSE)" ✅
+# Try to toggle device → "User 'guest' cannot control devices" ❌
+```
+
+**Test SSE Fallback (Admin - Full access):**
+```bash
+# Launch app → Login as admin:admin123
+# Expected: "Connection: Connected (SSE)" ✅
+# Try to toggle device → Success ✅
+```
+
+**Test with Curl:**
+```bash
+# Test authenticated API
+curl -u guest:123 http://127.0.0.1:8000/api/metrics
+
+# Test SSE stream
+curl -u admin:admin123 -N http://127.0.0.1:8000/api/events/stream
+
+# Test unauthorized access
+curl http://127.0.0.1:8000/api/metrics
+# Expected: 401 Unauthorized
+```
+
+**Test with Python SSE Client (with auth):**
+```python
+# examples/sse_client_demo.py
+import requests
+from requests.auth import HTTPBasicAuth
+
+response = requests.get(
+    'http://127.0.0.1:8000/api/events/stream',
+    auth=HTTPBasicAuth('guest', '123'),
+    stream=True
+)
+
+for line in response.iter_lines():
+    if line:
+        print(line.decode('utf-8'))
+```
+
+---
+
+## 📖 Additional Documentation
+
+- **🆕 [SSE_AUTH_IMPLEMENTATION.md](SSE_AUTH_IMPLEMENTATION.md)** - SSE authentication implementation details
+- **🆕 [SSE_AUTH_TESTING.md](SSE_AUTH_TESTING.md)** - Testing guide for authenticated SSE
+- **[docs/FALLBACK.md](docs/FALLBACK.md)** - Complete fallback architecture documentation
+- **[docs/FALLBACK_QUICKSTART.md](docs/FALLBACK_QUICKSTART.md)** - Quick start guide for SSE mode
+- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Detailed system architecture
+- **[docs/CONFIGURATION.md](docs/CONFIGURATION.md)** - Advanced configuration options
+- **[FALLBACK_FIX.md](FALLBACK_FIX.md)** - Recent fallback logic improvements
+- **[GUEST_MODE_TESTING.md](GUEST_MODE_TESTING.md)** - Testing guest mode auto-login
+
+---
+
+## 🔒 Security Notes
+
+### ⚠️ Important for Production
+
+1. **Use HTTPS**: Always use HTTPS in production to protect credentials in transit
+   ```bash
+   uvicorn main:app --ssl-keyfile key.pem --ssl-certfile cert.pem
+   ```
+
+2. **Strong Passwords**: Change default passwords:
+   ```bash
+   export GUEST_PASSWORD="your-strong-guest-password"
+   export ADMIN_PASSWORD="your-strong-admin-password"
+   ```
+
+3. **Rate Limiting**: Add rate limiting to prevent brute-force attacks
+
+4. **JWT Tokens**: For production, consider using JWT tokens instead of Basic Auth
+
+### Current Implementation (Development)
+
+- **Basic Authentication**: Username/password sent with each request
+- **No Token Storage**: Credentials stored in `AppSettings` (Preferences)
+- **HTTP Support**: Works over HTTP (use HTTPS in production)
+- **Default Credentials**: Guest (guest:123), Admin (admin:admin123)
+
+---
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-
-## 🙏 Acknowledgments
-
-- [.NET MAUI Team](https://github.com/dotnet/maui)
-- [MQTTnet](https://github.com/dotnet/MQTTnet)
-- [LiveChartsCore](https://github.com/beto-rodriguez/LiveCharts2)
-- [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet)
-- [Polly](https://github.com/App-vNext/Polly)
-
----
-
-**Made using .NET MAUI**

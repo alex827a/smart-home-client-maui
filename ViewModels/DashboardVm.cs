@@ -16,7 +16,7 @@ namespace SmartHome2.ViewModels
     {
         private readonly IApiClient _api;
         private readonly IDataStore _store;
-        private readonly IMqttService _mqtt;
+        private readonly IRealtimeService _realtime; // Changed from IMqttService
         private IDispatcherTimer? _timer;
         private CancellationTokenSource? _timerCts;
         private bool _isTimerRunning;
@@ -24,7 +24,8 @@ namespace SmartHome2.ViewModels
         [ObservableProperty] private MetricsDto? metrics;
         [ObservableProperty] private bool isBusy;
         [ObservableProperty] private string status = "—";
-        [ObservableProperty] private string mqttStatus = "Disconnected";
+        [ObservableProperty] private string realtimeStatus = "Disconnected"; // Changed from mqttStatus
+        [ObservableProperty] private string realtimeMode = "—"; // New: shows "mqtt", "sse", or "disconnected"
         [ObservableProperty] private string userRole = "";
         [ObservableProperty] private bool isAdmin = false;
         [ObservableProperty] private bool isGuest = false;
@@ -35,15 +36,15 @@ namespace SmartHome2.ViewModels
         [ObservableProperty] private int power;
         [ObservableProperty] private string ts = "";
 
-        public DashboardVm(IApiClient api, IDataStore store, IMqttService mqtt)
+        public DashboardVm(IApiClient api, IDataStore store, IRealtimeService realtime)
         {
             _api = api;
             _store = store;
-            _mqtt = mqtt;
+            _realtime = realtime;
 
-            // Subscribe to MQTT events
-            _mqtt.MetricsReceived += OnMqttMetricsReceived;
-            _mqtt.ConnectionStatusChanged += OnMqttConnectionStatusChanged;
+            // Subscribe to realtime events
+            _realtime.MetricsReceived += OnRealtimeMetricsReceived;
+            _realtime.ConnectionStatusChanged += OnRealtimeConnectionStatusChanged;
 
             // Set user role
             UserRole = AppSettings.CurrentUserRole;
@@ -53,9 +54,9 @@ namespace SmartHome2.ViewModels
             System.Diagnostics.Debug.WriteLine($"DashboardVm: UserRole={UserRole}, IsAdmin={IsAdmin}, IsGuest={IsGuest}");
         }
 
-        private void OnMqttMetricsReceived(object? sender, MetricsDto metrics)
+        private void OnRealtimeMetricsReceived(object? sender, MetricsDto metrics)
         {
-            System.Diagnostics.Debug.WriteLine($"DashboardVm: MQTT metrics received: {metrics.Temp}°C");
+            System.Diagnostics.Debug.WriteLine($"DashboardVm: Realtime metrics received: {metrics.Temp}°C (Mode: {_realtime.CurrentMode})");
             
             MainThread.BeginInvokeOnMainThread(() =>
             {
@@ -64,16 +65,18 @@ namespace SmartHome2.ViewModels
                 Humidity = metrics.Humidity;
                 Power = metrics.Power;
                 Ts = metrics.Ts;
-                Status = "MQTT (realtime)";
+                Status = _realtime.CurrentMode == "mqtt" ? "MQTT (realtime)" : "SSE Fallback (realtime)";
+                RealtimeMode = _realtime.CurrentMode.ToUpper();
             });
         }
 
-        private void OnMqttConnectionStatusChanged(object? sender, string status)
+        private void OnRealtimeConnectionStatusChanged(object? sender, string status)
         {
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                MqttStatus = status;
-                System.Diagnostics.Debug.WriteLine($"DashboardVm: MQTT status changed: {status}");
+                RealtimeStatus = status;
+                RealtimeMode = _realtime.CurrentMode.ToUpper();
+                System.Diagnostics.Debug.WriteLine($"DashboardVm: Realtime status changed: {status} (Mode: {RealtimeMode})");
             });
         }
 
@@ -86,8 +89,8 @@ namespace SmartHome2.ViewModels
             
             System.Diagnostics.Debug.WriteLine($"DashboardVm.InitializeAsync: Refreshed user role - UserRole={UserRole}, IsAdmin={IsAdmin}, IsGuest={IsGuest}");
             
-            // Start MQTT connection
-            await _mqtt.StartAsync();
+            // Start realtime connection (MQTT with SSE fallback)
+            await _realtime.StartAsync();
             
             // Load cached data initially
             var cached = await _store.LoadMetricsAsync();
@@ -276,9 +279,9 @@ namespace SmartHome2.ViewModels
 
         public void Cleanup()
         {
-            // Unsubscribe from MQTT events to prevent memory leaks
-            _mqtt.MetricsReceived -= OnMqttMetricsReceived;
-            _mqtt.ConnectionStatusChanged -= OnMqttConnectionStatusChanged;
+            // Unsubscribe from realtime events to prevent memory leaks
+            _realtime.MetricsReceived -= OnRealtimeMetricsReceived;
+            _realtime.ConnectionStatusChanged -= OnRealtimeConnectionStatusChanged;
             StopTimer();
             System.Diagnostics.Debug.WriteLine("DashboardVm: Cleanup completed");
         }

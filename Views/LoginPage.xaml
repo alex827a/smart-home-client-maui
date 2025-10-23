@@ -44,6 +44,30 @@
                    HorizontalOptions="Center"
                    TextColor="White"/>
             
+            <!-- Guest Mode Info Banner -->
+            <Frame BorderColor="LightGreen" 
+                   BackgroundColor="#E8F5E9"
+                   CornerRadius="10" 
+                   Padding="15"
+                   IsVisible="{Binding ShowGuestModeInfo}"
+                   Margin="0,10,0,10">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="🌐 Guest Mode Available" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           TextColor="DarkGreen"
+                           HorizontalOptions="Center"/>
+                    <Label Text="MQTT unavailable - using SSE fallback" 
+                           FontSize="12" 
+                           TextColor="Gray"
+                           HorizontalOptions="Center"/>
+                    <Label Text="Auto-connecting in 2 seconds..." 
+                           FontSize="10" 
+                           TextColor="Gray"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Frame>
+            
             <Frame BorderColor="White" CornerRadius="10" Padding="0" HasShadow="False">
                 <VerticalStackLayout Padding="20" Spacing="15">
                     

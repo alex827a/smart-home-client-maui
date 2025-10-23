@@ -12,5 +12,6 @@ namespace SmartHome2.Services
         Task<MetricsDto> GetMetricsAsync(CancellationToken ct = default);
         Task<List<DeviceDto>> GetDevicesAsync(CancellationToken ct = default);
         Task<DeviceDto> ToggleDeviceAsync(string id, CancellationToken ct = default);
+        Task<T?> GetAsync<T>(string endpoint, CancellationToken ct = default) where T : class;
     }
 }

@@ -11,7 +11,7 @@ namespace SmartHome2.Services
     public class MockApiClient : IApiClient
     {
         readonly Random _rnd = new();
-        
+
         public Task<MetricsDto> GetMetricsAsync(CancellationToken ct = default)
         {
             var dto = new MetricsDto(
@@ -41,6 +41,12 @@ namespace SmartHome2.Services
             // Mock toggle - just return the device with flipped state
             var device = new DeviceDto(id, $"Mock {id}", _rnd.NextDouble() > 0.5, DateTime.Now.ToString("O"));
             return Task.FromResult(device);
+        }
+
+        public Task<T?> GetAsync<T>(string endpoint, CancellationToken ct = default) where T : class
+        {
+            // Мок-реализация: возвращает null для любого типа
+            return Task.FromResult<T?>(null);
         }
     }
 }

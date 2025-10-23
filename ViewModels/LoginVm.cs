@@ -8,17 +8,63 @@ namespace SmartHome2.ViewModels
 {
     public partial class LoginVm : ObservableObject
     {
-        private readonly IMqttService _mqttService;
+        private readonly IRealtimeService _realtimeService;
+        private readonly IApiClient _apiClient;
 
         [ObservableProperty] private string username = "";
         [ObservableProperty] private string password = "";
         [ObservableProperty] private string errorMessage = "";
         [ObservableProperty] private bool hasError = false;
         [ObservableProperty] private bool isBusy = false;
+        [ObservableProperty] private string connectionMode = "";
+        [ObservableProperty] private bool showGuestModeInfo = false;
 
-        public LoginVm(IMqttService mqttService)
+        public LoginVm(IRealtimeService realtimeService, IApiClient apiClient)
         {
-            _mqttService = mqttService;
+            _realtimeService = realtimeService;
+            _apiClient = apiClient;
+        }
+
+        /// <summary>
+        /// Called when page appears - does NOT auto-login, just checks availability
+        /// </summary>
+        public async Task InitializeAsync()
+        {
+            try
+            {
+                // Just check server availability, don't auto-login
+                var status = await CheckServerStatusAsync();
+                
+                if (status != null)
+                {
+                    if (status.MqttAvailable)
+                    {
+                        ConnectionMode = "MQTT Available";
+                        ShowGuestModeInfo = false;
+                    }
+                    else
+                    {
+                        ConnectionMode = "MQTT Unavailable (SSE fallback available)";
+                        ShowGuestModeInfo = false; // Don't show banner yet
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"LoginVm: InitializeAsync failed - {ex.Message}");
+            }
+        }
+
+        private async Task<ServerStatus?> CheckServerStatusAsync()
+        {
+            try
+            {
+                return await _apiClient.GetAsync<ServerStatus>("api/status");
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         [RelayCommand]
@@ -63,6 +109,7 @@ namespace SmartHome2.ViewModels
                 IsBusy = true;
                 HasError = false;
                 ErrorMessage = "";
+                ShowGuestModeInfo = false;
 
                 // Save credentials
                 AppSettings.MqttUsername = Username.Trim();
@@ -72,27 +119,63 @@ namespace SmartHome2.ViewModels
                 var role = Username.Trim().ToLower() == "admin" ? "admin" : "guest";
                 AppSettings.CurrentUserRole = role;
 
-                // Test connection
-                await _mqttService.StartAsync();
+                System.Diagnostics.Debug.WriteLine($"LoginVm: Attempting login as {role}...");
 
-                // Wait a bit to see if connection succeeds
-                await Task.Delay(2000);
+                // Try to connect (will try MQTT first, then SSE fallback automatically)
+                await _realtimeService.StartAsync();
 
-                if (_mqttService.IsConnected)
+                // Wait to see if connection succeeds
+                await Task.Delay(3000); // Give more time for connection
+
+                if (_realtimeService.IsConnected)
                 {
+                    var mode = _realtimeService.CurrentMode.ToUpper();
+                    System.Diagnostics.Debug.WriteLine($"LoginVm: Connected successfully via {mode}");
+                    
                     // Navigate to main page
                     await Shell.Current.GoToAsync("//DashboardPage");
                 }
                 else
                 {
+                    // Connection failed - check if guest mode fallback is available
+                    System.Diagnostics.Debug.WriteLine("LoginVm: Connection failed, checking guest mode fallback...");
+                    
+                    var serverStatus = await CheckServerStatusAsync();
+                    
+                    if (serverStatus != null && !serverStatus.MqttAvailable && role == "guest")
+                    {
+                        // MQTT unavailable but we can try SSE guest mode
+                        System.Diagnostics.Debug.WriteLine("LoginVm: Trying SSE guest mode fallback...");
+                        ShowGuestModeInfo = true;
+                        ConnectionMode = "Connecting via SSE fallback...";
+                        
+                        // Try SSE connection
+                        await _realtimeService.StopAsync(); // Stop failed attempt
+                        await Task.Delay(500);
+                        await _realtimeService.StartAsync(); // Restart (will use SSE)
+                        
+                        await Task.Delay(2000);
+                        
+                        if (_realtimeService.IsConnected && _realtimeService.CurrentMode == "sse")
+                        {
+                            System.Diagnostics.Debug.WriteLine("LoginVm: SSE guest mode connection successful!");
+                            await Shell.Current.GoToAsync("//DashboardPage");
+                            return;
+                        }
+                    }
+                    
+                    // Still failed
                     ShowError(loc.FailedToConnect);
                     AppSettings.MqttUsername = "";
                     AppSettings.MqttPassword = "";
+                    ShowGuestModeInfo = false;
                 }
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"LoginVm: Login exception - {ex.Message}");
                 ShowError($"{loc.LoginFailed}: {ex.Message}");
+                ShowGuestModeInfo = false;
             }
             finally
             {
@@ -121,6 +204,12 @@ namespace SmartHome2.ViewModels
         {
             ErrorMessage = message;
             HasError = true;
+        }
+
+        private class ServerStatus
+        {
+            public bool MqttAvailable { get; set; }
+            public string? RecommendedMode { get; set; }
         }
     }
 }

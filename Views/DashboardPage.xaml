@@ -34,9 +34,11 @@
                 <Label FontSize="12" TextColor="Gray">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding Source={x:Static res:AppResources.Instance}, Path=Mqtt}"/>
-                            <Span Text=": "/>
-                            <Span Text="{Binding MqttStatus}"/>
+                            <Span Text="Connection: "/>
+                            <Span Text="{Binding RealtimeStatus}"/>
+                            <Span Text=" ("/>
+                            <Span Text="{Binding RealtimeMode}"/>
+                            <Span Text=")"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
