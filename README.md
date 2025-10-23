@@ -425,12 +425,8 @@ SmartHome2/
 ├── Utils/                   # Helper classes
 │   ├── BoolToOnOffConverter.cs # XAML converters
 │   └── BoolToModeConverter.cs
-├── docs/                    #  Documentation
-│   ├── FALLBACK.md          # Fallback mode technical documentation
-│   ├── FALLBACK_QUICKSTART.md # Quick start guide for fallback
-│   ├── ARCHITECTURE.md      # Detailed architecture
+├── docs/                    #  Documentation   
 │   ├── CONFIGURATION.md     # Configuration guide
-│   └── ...                  # Other docs
 ├── Platforms/               # Platform-specific code
 │   ├── Windows/
 │   ├── Android/
@@ -443,30 +439,9 @@ SmartHome2/
 
 ```
 
-### Debugging MQTT
-
-Enable verbose logging:
-```csharp
-// MqttService.cs - Already enabled
-System.Diagnostics.Debug.WriteLine($"MQTT: Message received on {topic}: {payload}");
-```
-
-View logs in Visual Studio: **Debug → Windows → Output** (select "Debug")
 
 
-
-## 📖 Additional Documentation
-- **[docs/FALLBACK.md](docs/FALLBACK.md)** - Complete fallback architecture documentation
-- **[docs/FALLBACK_QUICKSTART.md](docs/FALLBACK_QUICKSTART.md)** - Quick start guide for SSE mode
-- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Detailed system architecture
-- **[docs/CONFIGURATION.md](docs/CONFIGURATION.md)** - Advanced configuration options
-- **[FALLBACK_FIX.md](FALLBACK_FIX.md)** - Recent fallback logic improvements
-- **[GUEST_MODE_TESTING.md](GUEST_MODE_TESTING.md)** - Testing guest mode auto-login
-
----
-
-##  Security Notes
-
+##  Security Note
 ### Important for Production
 
 1. **Use HTTPS**: Always use HTTPS in production to protect credentials in transit
