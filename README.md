@@ -21,6 +21,7 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 ## 📋 Table of Contents
 
 - [⚡ Features](#features)
+- [⚡ Screenshots](#screenshots)
 - [🧩 Architecture](#architecture)
 - [🛠️ Prerequisites](#prerequisites)
 - [⚙️ Configuration](#configuration)
@@ -61,8 +62,22 @@ Backend Server - FastAPI backend repository: [alex827a/smart-home-backend](https
 - **Secure Credentials**: Persistent credential storage
 
 
----
+## Screenshots
 
+- **Login Page**  
+  <img src="screen/loginpage.png" alt="Login Page" width="350"/>
+
+- **Dashboard**  
+  <img src="screen/dashboard.png" alt="Dashboard" width="350"/>
+
+- **Devices List**  
+  <img src="screen/devices.png" alt="Devices List" width="350"/>
+
+- **Metrics / Charts**  
+  <img src="screen/metrics.png" alt="Metrics / Charts" width="350"/>
+
+- **Settings**  
+  <img src="screen/settings.png" alt="Settings" width="350"/>
 ## Architecture
 
 ```
