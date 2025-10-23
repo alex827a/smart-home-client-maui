@@ -54,8 +54,11 @@ Then choose one of two ways to launch it:
 
 🔹 Option A — Simple mode (no MQTT, for quick test)
 
-
-python run_server.py
+   ```bash
+   
+     python run_server.py
+   
+   ```
 
 Server starts on http://127.0.0.1:8001
 
@@ -63,13 +66,18 @@ Server starts on http://127.0.0.1:8001
 
 🔹 Option B — Full mode (MQTT + TLS)
 
-.\start_server_with_mqtt_tls.ps1
+   ```bash
+   
+     .\start_server_with_mqtt_tls.ps1
+   
+   ```
 
-Requires Mosquitto and local certificates (certs/).
 
-Starts FastAPI on port 8001 and MQTT on 8883 / 8884.
+  Requires Mosquitto and local certificates (see [MQTT/TLS setup guide](https://github.com/alex827a/smart-home-backend/blob/main/README_MQTT_TLS.md)).
 
-Use admin/guest accounts as defined in ACL.
+  Starts FastAPI on port 8001 and MQTT on 8883 / 8884.
+
+  Use admin/guest accounts as defined in ACL.
 
 
 ---
@@ -94,7 +102,7 @@ Use MQTT    = ON (optional)
 
 admin / admin123 (Full access)
 
-guest / guest123 (Read-only)
+guest / 123 (Read-only)
 
 
 
@@ -104,7 +112,7 @@ guest / guest123 (Read-only)
 
 4️⃣ Verify
 
-Open browser: http://127.0.0.1:8000/docs → Swagger UI available.
+Open browser: http://127.0.0.1:8001/docs → Swagger UI available.
 
 In app: devices list updates, metrics change live (if MQTT connected).
 
@@ -118,12 +126,12 @@ If MQTT is offline → app switches to SSE fallback mode (REST only).
 
 Port Service Description
 
-8000 FastAPI Backend REST + SSE
+8001 FastAPI Backend REST + SSE
 8883 MQTT TLS Secure connection (admin)
 8884 MQTT TLS (no cert) Guest mode (optional)
 
 
-Firewall: allow TCP 8000 / 8883 / 8884.
+Firewall: allow TCP 8001 / 8883 / 8884.
 Certificates: not included in repo → generate via mkcert.
 ## Features
 
